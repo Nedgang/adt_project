@@ -7,12 +7,15 @@
 # IMPORT #
 ##########
 import nltk
+import sys
+
+import cli_parser
 
 ########
 # MAIN #
 ########
 def main():
-    pass
+    arg = cli_parser.read_arg(sys.argv)
 
 #############
 # FUNCTIONS #
