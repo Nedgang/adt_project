@@ -10,7 +10,13 @@ def read_arg(args):
     
     parser = __create_parser()
 
-    return vars(parser.parse_args())
+    arg = vars(parser.parse_args())
+
+    if arg["unicorn"]:
+        __unicorn()
+    
+    return arg
+
 
 def __create_parser():
     """ Create the parser of argument """
@@ -22,6 +28,10 @@ def __create_parser():
     parser.add_argument("-o", "--output", type=str, required=True,
                         help="prefix of all output file")
 
+    # easter egg
+    parser.add_argument("--unicorn", action='store_true',
+                        help=argparse.SUPPRESS)
+    
     return parser
     
     
@@ -32,3 +42,7 @@ def __isdir(val):
         raise argparse.ArgumentTypeError("We need "+val+" is a directory")
 
     return val
+
+def __unicorn():
+    print('\e[92m')
+    print('\e[105m')
