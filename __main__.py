@@ -8,7 +8,9 @@
 ##########
 # IMPORT #
 ##########
+import glob
 import nltk
+import os
 import sys
 
 import cli_parser
@@ -17,11 +19,17 @@ import cli_parser
 # MAIN #
 ########
 def main(arg):
-    pass
+    for mail in get_mails(arg["input"]):
+        print(mail)
+
 
 #############
 # FUNCTIONS #
 #############
+def get_mails(arg):
+    for directory in glob.glob(arg+"/*"):
+        for mail in glob.glob(directory+"/*"):
+            yield mail
 
 ##########
 # LAUNCH #
