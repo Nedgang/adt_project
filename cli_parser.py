@@ -24,7 +24,7 @@ def __create_parser():
     parser = argparse.ArgumentParser(prog="adt_project")
 
     parser.add_argument("-i", "--input", type=__isdir, required=True,
-                        help="directory content one dir per month.")
+                        help="directory content one dir per month")
     parser.add_argument("-o", "--output", type=str, required=True,
                         help="prefix of all output file")
 

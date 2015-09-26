@@ -14,6 +14,7 @@ import os
 import sys
 
 import cli_parser
+import tokenization
 
 ########
 # MAIN #
@@ -29,7 +30,7 @@ def main(arg):
 def get_mails(arg):
     for directory in glob.glob(arg+"/*"):
         for mail in glob.glob(directory+"/*"):
-            yield mail
+            print(mail)
 
 ##########
 # LAUNCH #
