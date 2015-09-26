@@ -16,8 +16,8 @@ import cli_parser
 ########
 # MAIN #
 ########
-def main():
-    arg = cli_parser.read_arg(sys.argv)
+def main(arg):
+    pass
 
 #############
 # FUNCTIONS #
@@ -27,4 +27,5 @@ def main():
 # LAUNCH #
 ##########
 if __name__ == "__main__":
-    main()
+    arg = cli_parser.read_arg(sys.argv)
+    main(arg)
