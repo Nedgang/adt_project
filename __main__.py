@@ -18,6 +18,7 @@ import tokenization
 import filtration
 import mail_parser
 import stemming
+import language_detection
 
 ########
 # MAIN #
@@ -25,27 +26,29 @@ import stemming
 def main(arg):
 
     filtr = filtration.Filtration(arg["filter_dir"])
-    
-    # Take all mail, and just mail 
+
+    # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
         # Read the mail
         mail = mail_parser.parse_mail(mail_path)
 
         # Tokenize and filter each field
-        for key in mail:
+        for key in ['subject', 'body']:
             mail[key] = tokenization.this_string(mail[key])
+            if key == 'body':
+                mail["lang"] = get_language_nltk(mail['body'])
             mail[key] = filtr(mail[key])
             mail[key] = stemming.stemme_list(mail[key])
-            
+
         # Write mail
         jsonout_name = arg["output"]
-        jsonout_name += os.path.dirname(mail_path).split('/').pop() + '-' 
+        jsonout_name += os.path.dirname(mail_path).split('/').pop() + '-'
         jsonout_name += os.path.splitext(os.path.basename(mail_path))[0]
         jsonout_name += ".json"
 
         mail_parser.write_json(mail, jsonout_name)
-            
+
 
 
 #############
