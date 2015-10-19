@@ -17,6 +17,7 @@ import cli_parser
 import tokenization
 import filtration
 import mail_parser
+import stemming
 
 ########
 # MAIN #
@@ -32,6 +33,7 @@ def main(arg):
         for key in mail:
             mail[key] = tokenization.this_string(mail[key])
             mail[key] = filtration.filtration(mail[key], arg["filter_dir"])
+            mail[key] = stemming.stemme_list(mail[key])
             
         # Write mail
         jsonout_name = arg["output"]
