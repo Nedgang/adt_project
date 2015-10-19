@@ -15,7 +15,7 @@ def read_arg(args):
     if arg["unicorn"]:
         __unicorn()
 
-    if arg["stopword_fr"] and arg["stopword_en"]:
+    if not arg["stopword_fr"] and not arg["stopword_en"]:
         if __stopword():
             print("""
             We can't download nltk stop word or you didn't want.
@@ -31,14 +31,14 @@ def __stopword():
         from nltk.corpus import stopwords
     except ImportError:
         answer = input("You want download nltk stopword [y/n] : ")
-    while answer.lower() not in ['y', 'n']:
-        answer = input("Please answer with [y/n] : ")
+        while answer.lower() not in ['y', 'n']:
+            answer = input("Please answer with [y/n] : ")
 
-    if answer.lower() == y:
-        import nltk
-        return nltk.download("stopwords")
-    else:
-        return false
+        if answer.lower() == y:
+            import nltk
+            return nltk.download("stopwords")
+        else:
+            return false
     
         
 def __create_parser():

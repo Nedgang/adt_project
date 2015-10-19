@@ -9,9 +9,9 @@ class StopWord:
         self.__stopword = dict()
         if not french and not english :
 
-            import nltk.corpus.stopwords
-            self.__stopword["english"] = set(nltk.corpus.stopwords("english"))
-            self.__stopword["french"] = set(nltk.corpus.stopwords("french"))
+            from nltk.corpus import stopwords
+            self.__stopword["english"] = set(stopwords.words("english"))
+            self.__stopword["french"] = set(stopwords.words("french"))
             print()
             
         else:
@@ -23,7 +23,7 @@ class StopWord:
                                           "\'", "<", ">", "=", "«", "»", "#")
 
     def __readfilter(self, filename):
-    """Warning this is private function didn't use please kiss"""
+        """Warning this is private function didn't use please kiss"""
 
         word_filter = set()
         with open(filename, "r") as filtr_list:
