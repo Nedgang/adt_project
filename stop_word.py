@@ -20,7 +20,7 @@ class StopWord:
             self.__stopword["french"] = self.__readfilter(french)
 
         self.__ponctuation = (",", ";", ".", ":", "(", ")", "\"",
-                                          "\'", "<", ">", "=", "«", "»", "#")
+                              "\'", "<", ">", "=", "«", "»", "#")
 
     def __readfilter(self, filename):
         """Warning this is private function didn't use please kiss"""
