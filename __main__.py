@@ -19,14 +19,16 @@ import filtration
 import mail_parser
 import stemming
 import language_detection
+import stop_word
 
 ########
 # MAIN #
 ########
 def main(arg):
 
-    filtr = filtration.Filtration(arg["filter_dir"])
-
+    stopword = stop_word.StopWord(arg["stopword_fr"],
+                                 arg["stopword_en"])
+    
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
@@ -34,11 +36,13 @@ def main(arg):
         mail = mail_parser.parse_mail(mail_path)
 
         # Tokenize and filter each field
-        for key in ['subject', 'body']:
+        for key in ['body', 'subject']:
             mail[key] = tokenization.this_string(mail[key])
+
             if key == 'body':
-                mail["lang"] = get_language_nltk(mail['body'])
-            mail[key] = filtr(mail[key])
+                mail["lang"] = language_detection.get_language(mail['body'], stopword.get_stopword())
+
+            mail[key] = filtration.filtration(mail[key], stopword, mail["lang"])
             mail[key] = stemming.stemme_list(mail[key])
 
         # Write mail
@@ -65,4 +69,7 @@ def get_mails(arg):
 ##########
 if __name__ == "__main__":
     arg = cli_parser.read_arg(sys.argv)
+    if(arg == None):
+        sys.exit(1)
+
     main(arg)
