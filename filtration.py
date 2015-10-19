@@ -10,9 +10,8 @@ def filtration(tok_content, stopword, language):
 
     word_ret = list()
 
-    print(stopword.get_ponctuation())
     for word in tok_content:
-        if word not in stopword.get_stopword()[language]:
+        if word not in stopword.get_stopword()[language] and word not in stopword.get_ponctuation() :
             word_ret.append(word)
             
     return word_ret
