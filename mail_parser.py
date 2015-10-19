@@ -6,18 +6,17 @@ import os
 from email.parser import Parser
 import json
 
-def parse_mail(file_in, prefix_out):
+def parse_mail(file_in):
     """
         Extract Subject & Body of mail file
         headers must be RFC 2822 style
-        outfile is created in the same directory than infile
     """
 
-    filename_out = os.path.splitext(os.path.basename(file_in))[0] + ".json"
-    infile_path = os.path.dirname(file_in)
-    dirname = infile_path.split('/').pop()
-
-    PATH_out = infile_path + '/' + dirname + '_' + prefix_out + '_' + filename_out
+    # filename_out = os.path.splitext(os.path.basename(file_in))[0] + ".json"
+    # infile_path = os.path.dirname(file_in)
+    # dirname = infile_path.split('/').pop()
+    #
+    # PATH_out = infile_path + '/' + dirname + '_' + filename_out
 
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
@@ -26,5 +25,13 @@ def parse_mail(file_in, prefix_out):
                             "subject":  raw_mail['subject'],
                         }
 
-    with open(PATH_out, "w") as OUTFILE:
+    return formated_mail
+
+def write_json(dico, fileout):
+    """
+        Write dict into json-styled file
+        Je collectionne les canards...
+        ... vivants !
+    """
+    with open(fileout, "w") as OUTFILE:
         json.dump(formated_mail, OUTFILE, ensure_ascii=False)
