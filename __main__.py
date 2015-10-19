@@ -31,7 +31,7 @@ def main(arg):
         # Tokenize and filter each field
         for key in mail:
             mail[key] = tokenization.this_string(mail[key])
-            # mail[key] = filtration.filtration(mail[key], arg["input"] + "/filtration/")
+            mail[key] = filtration.filtration(mail[key], arg["filter_dir"])
             
         # Write mail
         jsonout_name = arg["output"]

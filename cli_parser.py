@@ -21,13 +21,19 @@ def read_arg(args):
 def __create_parser():
     """ Create the parser of argument """
 
-    parser = argparse.ArgumentParser(prog="adt_project")
+    parser = argparse.ArgumentParser(prog="adt_project",
+                                     formatter_class=
+                                     argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-i", "--input", type=__isdir, required=True,
                         help="directory content one dir per month")
     parser.add_argument("-o", "--output", type=str, required=True,
                         help="prefix of all output file")
+    parser.add_argument("-f", "--filter-dir", type=__isdir,
+                        default="data/filtration/",
+                        help="We read all file in this dir to filter word")
 
+    
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
                         help=argparse.SUPPRESS)
