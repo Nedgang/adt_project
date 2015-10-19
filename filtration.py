@@ -9,7 +9,11 @@ import blist
 
 class Filtration:
 
-    def __init__(self, filter_dir) :
+    def __init__(self, french_stop, english_stop, other_stop) :
+        self.__word_filter = dict()
+        self.__word_filter["french"] = self.__read_filter(french_stop)
+        self.__word_filter["english"] = self.__read_filter(english_stop)
+        self.__word_filter["other_stop"] = self.__readfilter
         self.word_filter = self.__readfilter(filter_dir)
 
     def __call__(self, tok_content):

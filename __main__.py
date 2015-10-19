@@ -19,6 +19,7 @@ import filtration
 import mail_parser
 import stemming
 import language_detection
+import stop_word
 
 ########
 # MAIN #
@@ -26,7 +27,9 @@ import language_detection
 def main(arg):
 
     filtr = filtration.Filtration(arg["filter_dir"])
-
+    stopword = stop_word.Stopword(arg["stopword_french"],
+                                 arg["stopword_english"])
+    
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
@@ -65,4 +68,7 @@ def get_mails(arg):
 ##########
 if __name__ == "__main__":
     arg = cli_parser.read_arg(sys.argv)
+    if(arg == None):
+        sys.exit(1)
+
     main(arg)

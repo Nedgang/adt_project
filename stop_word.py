@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+# -*- coding: utf8 -*-
+
+    
+class StopWord:
+
+    def __init__(self, french, english):
+        self.__stopword = dict()
+        if not french and not english :
+
+            import nltk.corpus.stopwords
+            self.__stopword["english"] = set(nltk.corpus.stopwords("english"))
+            self.__stopword["french"] = set(nltk.corpus.stopwords("french"))
+            print()
+            
+        else:
+
+            self.__stopword["english"] = self.__readfilter(english)
+            self.__stopword["french"] = self.__readfilter(french)
+
+        self.__ponctuation = (",", ";", ".", ":", "(", ")", "\"",
+                                          "\'", "<", ">", "=", "«", "»", "#")
+
+    def __readfilter(self, filename):
+    """Warning this is private function didn't use please kiss"""
+
+        word_filter = set()
+        with open(filename, "r") as filtr_list:
+            for word in filtr_list:
+                word_filter.append(word)
+    
+        return word_filter           
+
+    def get_stopword(self):
+        return self.__stopword
+
+    def get_ponctuation(self):
+        return self.__ponctuation

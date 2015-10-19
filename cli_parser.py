@@ -11,13 +11,36 @@ def read_arg(args):
     parser = __create_parser()
 
     arg = vars(parser.parse_args())
-
+ 
     if arg["unicorn"]:
         __unicorn()
 
+    if arg["stopword_fr"] and arg["stopword_en"]:
+        if __stopword():
+            print("""
+            We can't download nltk stop word or you didn't want.
+            Please use option --stopword-french and --stopword-english
+            """)
+            return None
+
     return arg
 
+def __stopword():
+    """ Try if nltk stop word is download if not propose to download it """
+    try:
+        from nltk.corpus import stopwords
+    except ImportError:
+        answer = input("You want download nltk stopword [y/n] : ")
+    while answer.lower() not in ['y', 'n']:
+        answer = input("Please answer with [y/n] : ")
 
+    if answer.lower() == y:
+        import nltk
+        return nltk.download("stopwords")
+    else:
+        return false
+    
+        
 def __create_parser():
     """ Create the parser of argument """
 
@@ -29,10 +52,11 @@ def __create_parser():
                         help="directory content one dir per month")
     parser.add_argument("-o", "--output", type=str, required=True,
                         help="prefix of all output file")
-    parser.add_argument("-f", "--filter-dir", type=__isdir,
-                        default="data/filtration/",
-                        help="We read all file in this dir to filter word")
-
+    
+    parser.add_argument("--stopword-fr", type=__isfile,
+                        help="We read this file for french stop word")
+    parser.add_argument("--stopword-en", type=__isfile,
+                        help="We read this file for english stop word")
     
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
@@ -41,6 +65,14 @@ def __create_parser():
     return parser
 
 
+def __isfile(val):
+    val = str(val)
+
+    if not os.path.isfile(val):
+        raise argparse.ArgumentTypeError(val+" is not a file")
+    
+    return val
+    
 def __isdir(val):
     val = str(val)
 
