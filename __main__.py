@@ -23,6 +23,9 @@ import stemming
 # MAIN #
 ########
 def main(arg):
+
+    filtr = filtration.Filtration(arg["filter_dir"])
+    
     # Take all mail, and just mail 
     for mail_path in get_mails(arg["input"]):
 
@@ -32,7 +35,7 @@ def main(arg):
         # Tokenize and filter each field
         for key in mail:
             mail[key] = tokenization.this_string(mail[key])
-            mail[key] = filtration.filtration(mail[key], arg["filter_dir"])
+            mail[key] = filtr(mail[key])
             mail[key] = stemming.stemme_list(mail[key])
             
         # Write mail
