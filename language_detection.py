@@ -8,12 +8,12 @@ try:
     from nltk.tokenize import word_tokenize
     from nltk.corpus import stopwords
 except ImportError:
-    print("You need to install the corpora (~2.4Go): nltk.download()")
+    print("no corpora found (~2.4Go) install with: nltk.download()")
 
-from nltk.tokenize import wordpunct_tokenize
+# from nltk.tokenize import wordpunct_tokenize
 
 
-def get_language_nltk(tokens):
+def get_language(tokens, stopwords):
     """
         Extract the language from an array of tokens, it is based on stop words
         and use the nltk corpora as reference
@@ -28,18 +28,10 @@ def get_language_nltk(tokens):
     languages_ratios = dict()
     words = [word.lower() for word in tokens]
 
-    for language in stopwords.fileids():
-        stopwords_set = set(stopwords.words(language))
+    for language in stopwords.keys():
         words_set = set(words)
-        common_elements = words_set.intersection(stopwords_set)
+        common_elements = words_set.intersection(stopwords[language])
 
         languages_ratios[language] = len(common_elements) # language score
 
     return max(languages_ratios, key=languages_ratios.get)
-
-def get_language(tokens, stopwords):
-    """
-        Extract the language from an array of tokens, based on the stop words
-        files given for the project
-    """
-    pass
