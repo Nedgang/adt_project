@@ -2,9 +2,10 @@
 
 # -*- coding: utf8 -*-
 
-import os
+import os, sys
 from email.parser import Parser
 import json
+import re
 
 def parse_mail(file_in):
     """
@@ -25,6 +26,9 @@ def parse_mail(file_in):
                             "subject":  raw_mail['subject'],
                         }
 
+    reg = re.compile("[^@|\s]+@[^@]+\.[^@|\s]+") # black magic
+    formated_mail['body'] = re.sub(reg, "",formated_mail['body']) # remove email
+
     return formated_mail
 
 def write_json(dico, fileout):
@@ -35,3 +39,5 @@ def write_json(dico, fileout):
     """
     with open(fileout, "w") as OUTFILE:
         json.dump(dico, OUTFILE, ensure_ascii=False)
+
+parse_mail(sys.argv[1])
