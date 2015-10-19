@@ -5,7 +5,7 @@
 # import
 import nltk.tokenize
 
-def this_file(string):
+def this_string(string):
     reg_words = r'''(?x)
     \d+(\.\d+)?\s*%
     | 's
@@ -20,4 +20,4 @@ def this_file(string):
 
     tok = nltk.tokenize.RegexpTokenizer(reg_words)
 
-    return tok.tokenize(string)
+    return tok.tokenize(str(string))
