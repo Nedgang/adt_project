@@ -8,7 +8,6 @@ Return a list of simple and complex terms.
 ##########
 # IMPORT #
 ##########
-from collections import defaultdic
 
 ########
 # MAIN #
@@ -27,6 +26,10 @@ def complexe_termes_extraction(list_words):
             (list_words[word_index], list_words[word_index+1]))
     # The count of each combinaison will be stocked in a dict.
     asso_number = __association_count(association_list)
+    complex_terms = __complex_terms(asso_number)
+    #result = 
+    clean_term_list(list_words, complex_terms)
+    #print(result)
 
 #############
 # FUNCTIONS #
@@ -36,7 +39,38 @@ def __association_count(association_list):
     Count each combinaison in a list of tuple, and return a dictionnary
     with the result.
     """
-    number_comb = defaultdic(int)
+    number_comb = {}
     for combinaison in association_list:
-        number_comb[combinaison] += 1
+        if combinaison in number_comb:
+            number_comb[combinaison] += 1
+        else:
+            number_comb[combinaison] = 1
     return number_comb
+
+def __complex_terms(dic_combinaison, k=2):
+    """
+    Take a dictionnary containing each combinaison of termes and return those
+    which are found k or more time (default k=2).
+    It return a list, containing each complex term in his string form.
+    """
+    # Return a list containing each tumple found k+ time
+    cplxes_terms = list(filter(lambda x: dic_combinaison[x] >= k, dic_combinaison))
+    # Now we transform each tuple in a string, to create the terms
+    for i in range(len(cplxes_terms)):
+        cplxes_terms[i] = cplxes_terms[i][0]+" "+cplxes_terms[i][1]
+    return cplxes_terms
+
+def clean_term_list(list_words, complex_terms):
+    """
+    Take the basic set of terms and the list of complex terms.
+    Return a list containing all the terms, complex and simple.
+    """
+    # We don't want to include simple terms already in complex terms
+    print(complex_terms)
+
+########
+# TEST #
+########
+complexe_termes_extraction(["a", "la", "queue", "leu", "leu", "insuffisance",
+                            "cardiaque", "queue", "supermarché", "insuffisance"
+                            , "cardiaque", "diabète", "queue", "leu"])
