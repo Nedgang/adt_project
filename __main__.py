@@ -15,13 +15,32 @@ import sys
 
 import cli_parser
 import tokenization
+import filtration
+import mail_parser
 
 ########
 # MAIN #
 ########
 def main(arg):
-    for mail in get_mails(arg["input"]):
-        print(mail)
+    # Take all mail, and just mail 
+    for mail_path in get_mails(arg["input"]):
+
+        # Read the mail
+        mail = mail_parser.parse_mail(mail_path)
+
+        # Tokenize and filter each field
+        for key in mail:
+            mail[key] = tokenization.this_string(mail[key])
+            # mail[key] = filtration.filtration(mail[key], arg["input"] + "/filtration/")
+            
+        # Write mail
+        jsonout_name = arg["output"]
+        jsonout_name += os.path.dirname(mail_path).split('/').pop() + '-' 
+        jsonout_name += os.path.splitext(os.path.basename(mail_path))[0]
+        jsonout_name += ".json"
+
+        mail_parser.write_json(mail, jsonout_name)
+            
 
 
 #############
@@ -30,7 +49,8 @@ def main(arg):
 def get_mails(arg):
     for directory in glob.glob(arg+"/*"):
         for mail in glob.glob(directory+"/*"):
-            print(mail)
+            if not mail.endswith(".txt"):
+                yield mail
 
 ##########
 # LAUNCH #
