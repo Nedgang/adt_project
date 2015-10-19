@@ -1,0 +1,15 @@
+Presentation du problème (+données)
+
+Modalités d'évaluation, critères de succès.
+
+Méthodes:
+        - Expliquer les choix, la chaine de traitement
+        - Alternatives, améliorations...
+        - Préparations des données, bibliothèques utilisées...
+
+Résultats:
+        - Evaluation quantitative et qualitative, limites, ...
+
+Qui a fait quoi?
+
+Conclusions, perspectives, ...
