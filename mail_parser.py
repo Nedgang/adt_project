@@ -34,4 +34,4 @@ def write_json(dico, fileout):
         ... vivants !
     """
     with open(fileout, "w") as OUTFILE:
-        json.dump(formated_mail, OUTFILE, ensure_ascii=False)
+        json.dump(dico, OUTFILE, ensure_ascii=False)
