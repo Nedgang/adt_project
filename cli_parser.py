@@ -7,20 +7,20 @@ import os
 
 def read_arg(args):
     """ Read cli argument and check if content the good value """
-    
+
     parser = __create_parser()
 
     arg = vars(parser.parse_args())
 
     if arg["unicorn"]:
         __unicorn()
-    
+
     return arg
 
 
 def __create_parser():
     """ Create the parser of argument """
-    
+
     parser = argparse.ArgumentParser(prog="adt_project")
 
     parser.add_argument("-i", "--input", type=__isdir, required=True,
@@ -31,15 +31,15 @@ def __create_parser():
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
                         help=argparse.SUPPRESS)
-    
+
     return parser
-    
-    
+
+
 def __isdir(val):
     val = str(val)
 
     if not os.path.isdir(val):
-        raise argparse.ArgumentTypeError("We need "+val+" is a directory")
+        raise argparse.ArgumentTypeError(val+" is not a directory")
 
     return val
 
@@ -54,15 +54,15 @@ def __unicorn():
                                        |\.--._/|//
                                       /\ ) ) ).'/
                                      /(  \  // /
-                                    /(   J`((_/ \ 
+                                    /(   J`((_/ \
                                    / ) | _\     /
                                   /|)  \  eJ    L
                                  |  \ L \   L   L
                                 /  \  J  `. J   L
-                                |  )   L   \/   \ 
+                                |  )   L   \/   \
                                /  \    J   (\   /
              _....___         |  \      \   \```
-      ,.._.-'        '''--...-||\     -. \   \ 
+      ,.._.-'        '''--...-||\     -. \   \
     .'.=.'                    `         `.\ [ Y
    /   /                                  \]  J
   Y / Y                                    Y   L
@@ -72,19 +72,19 @@ def __unicorn():
   |    \          I             \        ( |]/|
   J     \         /._           /        -tI/ |
    L     )       /   /'-------'J           `'-:.
-   J   .'      ,'  ,' ,     \   `'-.__          \ 
+   J   .'      ,'  ,' ,     \   `'-.__          \
     \ T      ,'  ,'   )\    /|        ';'---7   /
      \|    ,'L  Y...-' / _.' /         \   /   /
       J   Y  |  J    .'-'   /         ,--.(   /
-       L  |  J   L -'     .'         /  |    /\ 
+       L  |  J   L -'     .'         /  |    /\
        |  J.  L  J     .-;.-/       |    \ .' /
        J   L`-J   L____,.-'`        |  _.-'   |
         L  J   L  J                  ``  J    |
         J   L  |   L                     J    |
-         L  J  L    \                    L    \ 
-         |   L  ) _.'\                    ) _.'\ 
-         L    \('`    \                  ('`    \ 
+         L  J  L    \                    L    \
+         |   L  ) _.'\                    ) _.'\
+         L    \('`    \                  ('`    \
           ) _.'\`-....'                   `-....'
-         ('`    \ 
-          `-.___/   
+         ('`    \
+          `-.___/
 """)
