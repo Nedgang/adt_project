@@ -28,7 +28,7 @@ class StopWord:
         word_filter = set()
         with open(filename, "r") as filtr_list:
             for word in filtr_list:
-                word_filter.append(word)
+                word_filter.add(word)
     
         return word_filter           
 
