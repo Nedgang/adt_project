@@ -13,7 +13,7 @@ from collections import Counter
 ########
 # MAIN #
 ########
-def complexe(list_words):
+def complexe(list_words, threshold = 2):
     """
     This function will analyze a list of words and search for complexe termes.
     Take a list in entry, with the words in the text order.
@@ -29,23 +29,24 @@ def complexe(list_words):
 
     # The count of each combinaison will be stocked in a dict
     asso_number = Counter(association_list)
-    complex_terms = __filter_terms(asso_number)
+    complex_terms = __filter_terms(asso_number, threshold)
 
     return complex_terms
 
 
-def simple(list_words):
+def simple(list_words, threshold = 1):
     """
     This function will analyze a list of words and search for complexe termes.
     Take a list in entry, with the words in the text order.
     Return a dictionary, with simple terms and her occurence.
     """
-    return __filter_terms(Counter(list_words))
+    return __filter_terms(Counter(list_words), threshold)
+
 
 #############
 # FUNCTIONS #
 #############
-def __filter_terms(dic_combinaison, k=2):
+def __filter_terms(dic_combinaison, threshold):
     """
     Take a dictionnary containing each combinaison of termes and return those
     which are found k or more time (default k=2).
@@ -55,7 +56,7 @@ def __filter_terms(dic_combinaison, k=2):
     # Remove all key isn't present upper than k, and replace key tuple by a
     # string
     return {__key2str(key):dic_combinaison[key] for key in
-                    dic_combinaison if dic_combinaison[key] >= k}
+                    dic_combinaison if dic_combinaison[key] >= threshold}
 
 
 def __key2str(key):
