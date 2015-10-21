@@ -13,11 +13,11 @@ from collections import Counter
 ########
 # MAIN #
 ########
-def complexe_termes_extraction(list_words):
+def complexe(list_words):
     """
     This function will analyze a list of words and search for complexe termes.
     Take a list in entry, with the words in the text order.
-    Return a list, with simple and complex terms.
+    Return a dictionary, with complex terms and her occurence.
     """
     association_list = []
 
@@ -29,15 +29,23 @@ def complexe_termes_extraction(list_words):
 
     # The count of each combinaison will be stocked in a dict
     asso_number = Counter(association_list)
-    complex_terms = __complex_terms(asso_number)
+    complex_terms = __filter_terms(asso_number)
 
     return complex_terms
 
 
+def simple(list_words):
+    """
+    This function will analyze a list of words and search for complexe termes.
+    Take a list in entry, with the words in the text order.
+    Return a dictionary, with simple terms and her occurence.
+    """
+    return __filter_terms(Counter(list_words))
+
 #############
 # FUNCTIONS #
 #############
-def __complex_terms(dic_combinaison, k=2):
+def __filter_terms(dic_combinaison, k=2):
     """
     Take a dictionnary containing each combinaison of termes and return those
     which are found k or more time (default k=2).
@@ -46,9 +54,18 @@ def __complex_terms(dic_combinaison, k=2):
     """
     # Remove all key isn't present upper than k, and replace key tuple by a
     # string
-    return {" ".join(key):dic_combinaison[key] for key in
+    return {__key2str(key):dic_combinaison[key] for key in
                     dic_combinaison if dic_combinaison[key] >= k}
 
+
+def __key2str(key):
+    """
+    Take a key and return in string format. 
+    """
+    if type(key) is tuple:
+        return " ".join(key)
+    else:
+        return key
 
 def clean_term_list(list_words, complex_terms):
     """
@@ -62,6 +79,9 @@ def clean_term_list(list_words, complex_terms):
 ########
 # TEST #
 ########
-complexe_termes_extraction(["a", "la", "queue", "leu", "leu", "insuffisance",
-                            "cardiaque", "queue", "supermarché", "insuffisance"
-                            , "cardiaque", "diabète", "queue", "leu"])
+if __name__ == "__main__":
+    list_of_terms = ["a", "la", "queue", "leu", "leu", "insuffisance",
+                     "cardiaque", "queue", "supermarché", "insuffisance"
+                     , "cardiaque", "diabète", "queue", "leu"]
+    print(complexe(list_of_terms))
+    print(simple(list_of_terms))

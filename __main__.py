@@ -20,6 +20,7 @@ import mail_parser
 import stemming
 import language_detection
 import stop_word
+import terms_counter
 
 ########
 # MAIN #
@@ -36,7 +37,7 @@ def main(arg):
         mail = mail_parser.parse_mail(mail_path)
 
         # Tokenize and filter each field
-        for key in ['body', 'subject']:
+        for key in ['body', 'subject']: # the order of key is important
             mail[key] = tokenization.this_string(mail[key])
 
             if key == 'body':
@@ -44,7 +45,9 @@ def main(arg):
 
             mail[key] = filtration.filtration(mail[key], stopword, mail["lang"])
             mail[key] = stemming.stemme_list(mail[key])
-
+            mail["complexe_terms_"+key] = terms_counter.complexe(mail[key])
+            mail["simple_terms_"+key] = terms_counter.simple(mail[key])
+            
         # Write mail
         jsonout_name = arg["output"]
         jsonout_name += os.path.dirname(mail_path).split('/').pop() + '-'
@@ -52,7 +55,6 @@ def main(arg):
         jsonout_name += ".json"
 
         mail_parser.write_json(mail, jsonout_name)
-
 
 
 #############
