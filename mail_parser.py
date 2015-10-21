@@ -30,6 +30,10 @@ def parse_mail(file_in):
     reg = re.compile("[^@|\s]+@[^@]+\.[^@|\s]+") # black magic
     formated_mail['body'] = re.sub(reg, "",formated_mail['body'])
 
+    date = os.path.dirname(file_in).split('/').pop() + '-'
+    name = os.path.splitext(os.path.basename(file_in))[0]
+    formated_mail['name'] = date+name
+    
     return formated_mail
 
 
