@@ -20,17 +20,19 @@ def complexe_termes_extraction(list_words):
     Return a list, with simple and complex terms.
     """
     association_list = []
+
     #For each word in the list, we take the next one and save the combinaison
     # to make a count on it.
     for word_index in range(len(list_words)-1):
         association_list.append(
             (list_words[word_index], list_words[word_index+1]))
+
     # The count of each combinaison will be stocked in a dict
     asso_number = Counter(association_list)
     complex_terms = __complex_terms(asso_number)
-    #result = 
-    clean_term_list(list_words, complex_terms)
-    #print(result)
+
+    return complex_terms
+
 
 #############
 # FUNCTIONS #
@@ -39,14 +41,14 @@ def __complex_terms(dic_combinaison, k=2):
     """
     Take a dictionnary containing each combinaison of termes and return those
     which are found k or more time (default k=2).
-    It return a list, containing each complex term in his string form.
+    It return a dict, containing each complex term is a key in string form, 
+    and value is the numbre is presente in dic_combinaison.
     """
-    # Return a list containing each tumple found k+ time
-    cplxes_terms = list(filter(lambda x: dic_combinaison[x] >= k, dic_combinaison))
-    # Now we transform each tuple in a string, to create the terms
-    for i in range(len(cplxes_terms)):
-        cplxes_terms[i] = cplxes_terms[i][0]+" "+cplxes_terms[i][1]
-    return cplxes_terms
+    # Remove all key isn't present upper than k, and replace key tuple by a
+    # string
+    return {" ".join(key):dic_combinaison[key] for key in
+                    dic_combinaison if dic_combinaison[key] >= k}
+
 
 def clean_term_list(list_words, complex_terms):
     """
@@ -55,6 +57,7 @@ def clean_term_list(list_words, complex_terms):
     """
     # We don't want to include simple terms already in complex terms
     print(complex_terms)
+
 
 ########
 # TEST #
