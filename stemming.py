@@ -17,3 +17,15 @@ def stemme_list(source, language):
         stem_word.append(stemmer.stem(word))
 
     return stem_word
+
+
+########
+# TEST #
+########
+if __name__ == "__main__":
+    list_of_terms = ["a", "la", "queue", "leu", "leu", "insuffisance",
+                     "cardiaque", "queue", "supermarché", "insuffisance"
+                     , "cardiaque", "diabète", "queue", "leu"]
+    print(list_of_terms)
+    print(stemme_list(list_of_terms, "french"))
+    
