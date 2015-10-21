@@ -5,18 +5,13 @@
 # import
 import nltk.stem.snowball
 
-# local import
-# import lang_detection
+def stemme_list(source, language):
 
-def stemme_list(source):
+    if(language == "french"):
+        stemmer = nltk.stem.snowball.FrenchStemmer()
+    else:
+        stemmer = nltk.stem.snowball.EnglishStemmer()
 
-    # if(lang_detection(source) == "french"):
-    #     stemmer = nltk.stem.snowball.FrenchStemmer()
-    # else:
-    #     stemmer = nltk.stem.snowball.EnglishStemmer()
-
-    stemmer = nltk.stem.snowball.FrenchStemmer()
-    
     stem_word = list()
     for word in source:
         stem_word.append(stemmer.stem(word))

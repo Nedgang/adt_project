@@ -44,7 +44,7 @@ def main(arg):
                 mail["lang"] = language_detection.get_language(mail['body'], stopword.get_stopword())
 
             mail[key] = filtration.filtration(mail[key], stopword, mail["lang"])
-            mail[key] = stemming.stemme_list(mail[key])
+            mail[key] = stemming.stemme_list(mail[key], mail["lang"])
             mail["complexe_terms_"+key] = terms_counter.complexe(mail[key])
             mail["simple_terms_"+key] = terms_counter.simple(mail[key])
             
