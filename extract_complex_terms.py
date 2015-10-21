@@ -8,6 +8,7 @@ Return a list of simple and complex terms.
 ##########
 # IMPORT #
 ##########
+from collections import Counter
 
 ########
 # MAIN #
@@ -24,8 +25,8 @@ def complexe_termes_extraction(list_words):
     for word_index in range(len(list_words)-1):
         association_list.append(
             (list_words[word_index], list_words[word_index+1]))
-    # The count of each combinaison will be stocked in a dict.
-    asso_number = __association_count(association_list)
+    # The count of each combinaison will be stocked in a dict
+    asso_number = Counter(association_list)
     complex_terms = __complex_terms(asso_number)
     #result = 
     clean_term_list(list_words, complex_terms)
@@ -34,19 +35,6 @@ def complexe_termes_extraction(list_words):
 #############
 # FUNCTIONS #
 #############
-def __association_count(association_list):
-    """
-    Count each combinaison in a list of tuple, and return a dictionnary
-    with the result.
-    """
-    number_comb = {}
-    for combinaison in association_list:
-        if combinaison in number_comb:
-            number_comb[combinaison] += 1
-        else:
-            number_comb[combinaison] = 1
-    return number_comb
-
 def __complex_terms(dic_combinaison, k=2):
     """
     Take a dictionnary containing each combinaison of termes and return those
