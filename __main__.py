@@ -21,6 +21,7 @@ import stemming
 import language_detection
 import stop_word
 import terms_counter
+import invertedindex
 
 ########
 # MAIN #
@@ -29,6 +30,7 @@ def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"],
                                  arg["stopword_en"])
+    ii = invertedindex.InvertedIndex()
     
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
@@ -50,9 +52,9 @@ def main(arg):
             
         # Write mail
         jsonout_name = arg["output"]
-        jsonout_name += os.path.dirname(mail_path).split('/').pop() + '-'
-        jsonout_name += os.path.splitext(os.path.basename(mail_path))[0]
+        jsonout_name += mail["name"]
         jsonout_name += ".json"
+        ii.add_mail(mail)
 
         mail_parser.write_json(mail, jsonout_name)
 
