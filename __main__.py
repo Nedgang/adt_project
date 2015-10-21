@@ -30,7 +30,7 @@ def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"],
                                  arg["stopword_en"])
-    ii = invertedindex.InvertedIndex()
+    terms_ii = invertedindex.InvertedIndex()
     
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
@@ -54,7 +54,7 @@ def main(arg):
         jsonout_name = arg["output"]
         jsonout_name += mail["name"]
         jsonout_name += ".json"
-        ii.add_mail(mail)
+        terms_ii.add_mail(mail)
 
         mail_parser.write_json(mail, jsonout_name)
 

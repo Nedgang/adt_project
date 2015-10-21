@@ -13,7 +13,7 @@ from collections import Counter
 ########
 # MAIN #
 ########
-def complexe(list_words, threshold = 2):
+def complexe(list_words, complex_size = 2, threshold = 2):
     """
     This function will analyze a list of words and search for complexe termes.
     Take a list in entry, with the words in the text order.
@@ -23,10 +23,10 @@ def complexe(list_words, threshold = 2):
 
     #For each word in the list, we take the next one and save the combinaison
     # to make a count on it.
-    for word_index in range(len(list_words)-1):
+    for word_index in range(len(list_words)-complex_size):
         association_list.append(
-            (list_words[word_index], list_words[word_index+1]))
-
+            tuple(list_words[word_index:word_index+complex_size]))
+  
     # The count of each combinaison will be stocked in a dict
     asso_number = Counter(association_list)
     complex_terms = __filter_terms(asso_number, threshold)
