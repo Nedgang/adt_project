@@ -25,10 +25,7 @@ def complexe(list_words, complex_size = 2, threshold = 2):
     # For each word in the list, we take the next one and save the combinaison
     # to make a count on it.
     association_list = ngrams(list_words, complex_size)
-    # for word_index in range(len(list_words)-complex_size):
-    #     association_list.append(
-    #         tuple(list_words[word_index:word_index+complex_size]))
-  
+
     # The count of each combinaison will be stocked in a dict
     asso_number = Counter(association_list)
     complex_terms = __filter_terms(asso_number, threshold)
