@@ -12,7 +12,7 @@ def read_arg(args):
     parser = __create_parser()
 
     arg = vars(parser.parse_args())
- 
+
     if arg["unicorn"]:
         __unicorn()
 
@@ -41,25 +41,25 @@ def __stopword():
             return nltk.download("stopwords")
         else:
             return false
-    
-        
+
+
 def __create_parser():
     """ Create the parser of argument """
 
     parser = argparse.ArgumentParser(prog="adt_project",
-                                     formatter_class=
-                                     argparse.ArgumentDefaultsHelpFormatter)
+                                     formatter_class=argparse.
+                                     ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("-i", "--input", type=__isdir, required=True,
                         help="directory content one dir per month")
     parser.add_argument("-o", "--output", type=__output_check, required=True,
                         help="prefix of all output file")
-    
+
     parser.add_argument("--stopword-fr", type=__isfile,
                         help="We read this file for french stop word")
     parser.add_argument("--stopword-en", type=__isfile,
                         help="We read this file for english stop word")
-    
+
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
                         help=argparse.SUPPRESS)
@@ -72,7 +72,7 @@ def __isfile(val):
 
     if not os.path.isfile(val):
         raise argparse.ArgumentTypeError(val+" is not a file")
-    
+
     return val
 
 
@@ -95,7 +95,7 @@ def __output_check(val):
             raise argparse.ArgumentTypeError(total_path+"  is not a directory")
 
     return val
-    
+
 
 def __unicorn():
     print('\033[92m')

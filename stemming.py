@@ -5,6 +5,7 @@
 # import
 import nltk.stem.snowball
 
+
 def stemme_list(source, language):
 
     if(language == "french"):
@@ -24,8 +25,7 @@ def stemme_list(source, language):
 ########
 if __name__ == "__main__":
     list_of_terms = ["a", "la", "queue", "leu", "leu", "insuffisance",
-                     "cardiaque", "queue", "supermarché", "insuffisance"
-                     , "cardiaque", "diabète", "queue", "leu"]
+                     "cardiaque", "queue", "supermarché", "insuffisance",
+                     "cardiaque", "diabète", "queue", "leu"]
     print(list_of_terms)
     print(stemme_list(list_of_terms, "french"))
-    

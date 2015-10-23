@@ -5,6 +5,7 @@
 # import
 import nltk.tokenize
 
+
 def this_string(string):
     reg_words = r'''(?x)
     \d+(\.\d+)?\s*%
@@ -18,7 +19,7 @@ def this_string(string):
     # Version unicode
     reg_words += u"| \w\u2019"
     reg_words += u"|\w+|[^\w\s]"
-    
+
     tok = nltk.tokenize.RegexpTokenizer(reg_words)
 
     return tok.tokenize(str(string))

@@ -2,18 +2,17 @@
 
 # -*- coding: utf8 -*-
 
-    
+
 class StopWord:
 
     def __init__(self, french, english):
         self.__stopword = dict()
-        if not french and not english :
+        if not french and not english:
 
             from nltk.corpus import stopwords
             self.__stopword["english"] = set(stopwords.words("english"))
             self.__stopword["french"] = set(stopwords.words("french"))
-            print()
-            
+
         else:
 
             self.__stopword["english"] = self.__readfilter(english)
@@ -29,8 +28,8 @@ class StopWord:
         with open(filename, "r") as filtr_list:
             for word in filtr_list:
                 word_filter.add(word)
-    
-        return word_filter           
+
+        return word_filter
 
     def get_stopword(self):
         return self.__stopword

@@ -4,6 +4,7 @@
 
 # import
 
+
 class InvertedIndex:
 
     def __init__(self):
@@ -31,7 +32,7 @@ class InvertedIndex:
 
     def get_file_counter(self, terms):
         return self.index.values()
-        
+
     def file(self, terms):
         for val in file_counter(terms):
             yield val[0]

@@ -2,10 +2,12 @@
 
 # -*- coding: utf8 -*-
 
-import os, sys
+import os
+import sys
 from email.parser import Parser
 import json
 import re
+
 
 def parse_mail(file_in):
     """
@@ -22,18 +24,18 @@ def parse_mail(file_in):
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
         formated_mail = {
-                            "body":     raw_mail.get_payload(),
-                            "subject":  raw_mail['subject'],
-                        }
+            "body":     raw_mail.get_payload(),
+            "subject":  raw_mail['subject'],
+        }
 
     # small correction of text, remove email adresses in the text
-    reg = re.compile("[^@|\s]+@[^@]+\.[^@|\s]+") # black magic
-    formated_mail['body'] = re.sub(reg, "",formated_mail['body'])
+    reg = re.compile("[^@|\s]+@[^@]+\.[^@|\s]+")  # black magic
+    formated_mail['body'] = re.sub(reg, "", formated_mail['body'])
 
     date = os.path.dirname(file_in).split('/').pop() + '-'
     name = os.path.splitext(os.path.basename(file_in))[0]
     formated_mail['name'] = date+name
-    
+
     return formated_mail
 
 

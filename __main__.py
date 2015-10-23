@@ -23,15 +23,15 @@ import stop_word
 import terms_counter
 import invertedindex
 
+
 ########
 # MAIN #
 ########
 def main(arg):
 
-    stopword = stop_word.StopWord(arg["stopword_fr"],
-                                 arg["stopword_en"])
+    stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
     terms_ii = invertedindex.InvertedIndex()
-    
+
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
@@ -39,17 +39,19 @@ def main(arg):
         mail = mail_parser.parse_mail(mail_path)
 
         # Tokenize and filter each field
-        for key in ['body', 'subject']: # the order of key is important
+        for key in ['body', 'subject']:  # the order of key is important
             mail[key] = tokenization.this_string(mail[key])
 
             if key == 'body':
-                mail["lang"] = language_detection.get_language(mail['body'], stopword.get_stopword())
+                mail["lang"] = language_detection.get_language(
+                    mail['body'], stopword.get_stopword())
 
-            mail[key] = filtration.filtration(mail[key], stopword, mail["lang"])
+            mail[key] = filtration.filtration(mail[key], stopword,
+                                              mail["lang"])
             mail[key] = stemming.stemme_list(mail[key], mail["lang"])
             mail["complexe_terms_"+key] = terms_counter.complexe(mail[key])
             mail["simple_terms_"+key] = terms_counter.simple(mail[key])
-            
+
         # Write mail
         jsonout_name = arg["output"]
         jsonout_name += mail["name"]
@@ -73,7 +75,7 @@ def get_mails(arg):
 ##########
 if __name__ == "__main__":
     arg = cli_parser.read_arg(sys.argv)
-    if(arg == None):
+    if(arg is None):
         sys.exit(1)
 
     main(arg)

@@ -20,5 +20,6 @@ def filtration(tok_content, stopword, language):
 
 
 def __valid_word(word, stopword, language):
-    return word not in stopword.get_stopword()[language] and word not in stopword.get_ponctuation() and not re.match("\d+", word)
-
+    return (word not in stopword.get_stopword()[language]
+            and word not in stopword.get_ponctuation()
+            and not re.match("\d+", word))
