@@ -21,7 +21,7 @@ import stemming
 import language_detection
 import stop_word
 import terms_counter
-import invertedindex
+import inverted_index
 
 
 ########
@@ -30,7 +30,7 @@ import invertedindex
 def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
-    terms_ii = invertedindex.InvertedIndex()
+    terms_ii = inverted_index.InvertedIndex()
 
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):

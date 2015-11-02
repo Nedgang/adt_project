@@ -15,12 +15,6 @@ def parse_mail(file_in):
         headers must be formatted as a block of RFC 2822 style
     """
 
-    # filename_out = os.path.splitext(os.path.basename(file_in))[0] + ".json"
-    # infile_path = os.path.dirname(file_in)
-    # dirname = infile_path.split('/').pop()
-    #
-    # PATH_out = infile_path + '/' + dirname + '_' + filename_out
-
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
         formated_mail = {
