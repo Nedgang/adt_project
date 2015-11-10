@@ -45,7 +45,8 @@ import stop_word
 import terms_counter
 # Create stockage structure.
 import inverted_index
-
+# add comment
+import tag2terms
 
 ########
 # MAIN #
@@ -53,34 +54,38 @@ import inverted_index
 def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
-    terms_ii = inverted_index.InvertedIndex()
-
+    
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
         # Read the mail
         mail = mail_parser.parse_mail(mail_path)
 
-        # Tokenize and filter each field
-        for key in ['body', 'subject']:  # key order is important
-            mail[key] = tokenization.this_string(mail[key])
+        # Determinate language of mail
+        mail["lang"] = language_detection.get_language(mail['body'],
+                                                       stopword.get_stopword())
+        
+        # Tokenize filter and stemme body and subject
+        for field in ('body', 'subject'):
+            mail[field] = stemming.stemme_list(
+                filtration.filtration(
+                    tokenization.this_string(mail[field]),
+                    stopword,
+                    mail["lang"]),
+                mail["lang"])
 
-            if key == 'body':
-                mail["lang"] = language_detection.get_language(
-                    mail['body'], stopword.get_stopword())
+        # Need smart comment
+        mail['body_terms'] = terms_counter.complexe(mail['body']) 
+        mail['body_terms'].update(terms_counter.simple(mail['body']))
 
-            mail[key] = filtration.filtration(mail[key], stopword,
-                                              mail["lang"])
-            mail[key] = stemming.stemme_list(mail[key], mail["lang"])
-            mail["complexe_terms_"+key] = terms_counter.complexe(mail[key])
-            mail["simple_terms_"+key] = terms_counter.simple(mail[key])
-
+        # Need smart comment
+        mail['subject_terms'] = terms_counter.simple(mail['subject'])
+        
         # Write mail
         jsonout_name = arg["output"]
         jsonout_name += mail["name"]
         jsonout_name += ".json"
-        terms_ii.add_mail(mail)
-
+        
         mail_parser.write_json(mail, jsonout_name)
 
 
