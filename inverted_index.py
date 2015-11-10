@@ -13,11 +13,11 @@ class InvertedIndex:
     def add_mail(self, mail):
         for key in ["simple_terms_body", "complexe_terms_body"]:
             for terms in mail[key]:
-                if terms in self.index.keys():
-                    self.index[terms].append((mail["name"], mail[key][terms]))
+                if terms not in self.index.keys():
+                    self.index[terms] = dict()
+                    self.index[terms][mail["name"]] = mail[key][terms]
                 else:
-                    self.index[terms] = list()
-                    self.index[terms].append((mail["name"], mail[key][terms]))
+                    self.index[terms][mail["name"]] = mail[key][terms]
 
     def terms(self):
         for terms in self.index.keys():
@@ -26,17 +26,13 @@ class InvertedIndex:
     def get_terms(self):
         return self.index.keys()
 
-    def file_counter(self, terms):
-        for val in self.index[terms]:
+    def files(self, terms):
+        for val in self.index[terms].keys():
             yield val
 
-    def get_file_counter(self, terms):
-        return self.index.values()
+    def get_files(self, terms):
+        return self.index[terms].keys()
 
-    def file(self, terms):
-        for val in file_counter(terms):
-            yield val[0]
+    def val(self, terms, filename):
+        return self.index[terms][filename]
 
-    def counter(self, terms):
-        for val in file_counter(terms):
-            yield val[1]
