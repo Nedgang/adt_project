@@ -1,26 +1,49 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf-8 -*-
 """
+This project extract terms (simples and complex), from a mail corpus.
 
+Usage:
+    ./__main__.py (--input=<repository>) (--output=<file>) [options]
+
+Options:
+    --help, -h                  Show help message.
+    --input, -i=<repository>    The directory containing all data.
+    --output, -o=<file>         The _ file with results.
+    --stopword_fr=<file>        French stop words file. (default value include)
+    --stopword_en=<file>        English stop words file.(default value include)
+
+Authors:
+    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérôme.
 """
 
 ##########
 # IMPORT #
 ##########
+# EXISTANT LIBRARY
 import glob
 import nltk
 import os
 import sys
 
+# SPECIFIC LIBRARY
+# Our command line analyser/checker
 import cli_parser
+# Our tool to split text
 import tokenization
+# Used to remove words which are not terms
 import filtration
+# Extract mails differents parts
 import mail_parser
+# Terms racinisation
 import stemming
+# Detect wich language is used in the email.
 import language_detection
+# Manage stop words
 import stop_word
+# Smart terms counter (both simple and complex terms)
 import terms_counter
+# Create stockage structure.
 import inverted_index
 
 
@@ -39,7 +62,7 @@ def main(arg):
         mail = mail_parser.parse_mail(mail_path)
 
         # Tokenize and filter each field
-        for key in ['body', 'subject']:  # the order of key is important
+        for key in ['body', 'subject']:  # key order is important
             mail[key] = tokenization.this_string(mail[key])
 
             if key == 'body':
@@ -65,6 +88,10 @@ def main(arg):
 # FUNCTIONS #
 #############
 def get_mails(arg):
+    """
+    This function return a set of mails contained in a directory.
+    arg = directory path.
+    """
     for directory in glob.glob(arg+"/*"):
         for mail in glob.glob(directory+"/*"):
             if not mail.endswith(".txt"):
