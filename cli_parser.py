@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf8 -*-
+"""
+This library provide the command line analyse, and verification.
+"""
 
 import argparse
 import os
@@ -68,6 +70,7 @@ def __create_parser():
 
 
 def __isfile(val):
+    """Check  if the path is leading to a file."""
     val = str(val)
 
     if not os.path.isfile(val):
@@ -77,6 +80,7 @@ def __isfile(val):
 
 
 def __isdir(val):
+    """Check  if the path is leading to a directory."""
     val = str(val)
 
     if not os.path.isdir(val):
@@ -86,8 +90,8 @@ def __isdir(val):
 
 
 def __output_check(val):
+    """Check  if the path is leading to a directory."""
     val = str(val)
-
     total_path = ""
     for dir_name in os.path.splitext(os.path.dirname(val)):
         total_path = os.path.join(total_path, dir_name)
@@ -98,6 +102,7 @@ def __output_check(val):
 
 
 def __unicorn():
+    """Friendship is magic!"""
     print('\033[92m')
     print('\033[105m')
     print('\033[1m')
