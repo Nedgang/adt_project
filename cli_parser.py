@@ -56,9 +56,9 @@ def __create_parser():
                         help="prefix of all output file")
 
     parser.add_argument("--stopword-fr", type=__isfile,
-                        help="We read this file for french stop word")
+                        help="We use french stop word file.")
     parser.add_argument("--stopword-en", type=__isfile,
-                        help="We read this file for english stop word")
+                        help="We use english stop word file.")
 
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
