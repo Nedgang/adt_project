@@ -2,7 +2,7 @@ The MIT License (MIT)
 
 ADT Project
 
-Copyright (c) 2015 David Picart <picard.david1310@yahoo.fr>, Pierre Marijon
+Copyright (c) 2015 David Picard <picard.david1310@yahoo.fr>, Pierre Marijon
 <pierre@marijon.fr> and Jérome Pivert <pivertjerome@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
