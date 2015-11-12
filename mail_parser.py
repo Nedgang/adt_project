@@ -89,16 +89,16 @@ def dc_remove_adresses(dict):
 def dc_remove_url(dict):
     '''
         Small correction of text, remove URLs in the mail body
+        This regexp isn't an optimized one (see https://mathiasbynens.be/demo/url-regex)
         Sometimes, sacrificing goats to Satan isn't enough to get your regexp,
         sometimes you also need a bit of unicorn's power
     '''
-    reg = re.compile("^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@)?(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:/[^\s]*)?$") # ultra black magic
-    dict['body'] = re.subn(reg, "", dict['body'])[0]
+    reg = re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+") # ultra black magic
+    dict['body'] = re.sub(reg, "", dict['body'])
 
     return dict
 
 
-#print(dc_remove_adresses(parse_mail("test/test_mail/1.recoded")))
 
 '''
     with open(file_in, 'a') as s_file:
