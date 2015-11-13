@@ -8,6 +8,7 @@
 ##########
 import os, sys
 from email.parser import Parser
+from email.header import decode_header, make_header
 import email.header
 import json
 import re
@@ -29,6 +30,8 @@ def parse_mail(file_in):
             "subject":  raw_mail['subject'],
         }
 
+    if formated_mail['subject'] is not None:
+        formated_mail['subject'] = str(make_header(decode_header(formated_mail['subject'])))
 
     date = os.path.dirname(file_in).split('/').pop() + '-'
     name = os.path.splitext(os.path.basename(file_in))[0]
@@ -39,7 +42,7 @@ def parse_mail(file_in):
 
 def write_json(dico, fileout):
     """
-        Write dict into json-styled file
+        Write dict into json file
         Je collectionne les canards...
         ... vivants !
 
@@ -73,34 +76,6 @@ def fc_remove_blank_lines(file_in):
     with open(file_in, 'w') as INFILE:
         INFILE.write(new_body)
 
-
-def fc_correct_subject_encoding(file_in):
-    '''
-        Correct the bad encoding in subject of emails
-    '''
-
-    with open(file_in, 'a') as INFILE:
-        ugly_subject = msg.get('subject', None)
-
-        # No subject in header
-        if ugly_subject is not None:
-
-            # Multiple spaces (2)
-            ugly_subject = re.sub('[ ]{2}', '', ugly_subject)
-            r = decode_header(ugly_subject)
-
-            # No decoding required => [(entire chain)]
-            if len(r) > 1:
-                # Subject does not meet the RFC2047 :-(
-                try:
-                    clean_subject = ''.join(txt.decode(enc or "utf-8")
-                                            for txt, enc in r)
-                except:
-                    clean_subject = "ERROR: " + email_file_path + \
-                                    ";" + ugly_subject
-                finally:
-                    s_file.write(clean_subject + '\n')
-
 # DATA_CORRECTION
 def dc_remove_adresses(dict):
     '''
@@ -122,3 +97,5 @@ def dc_remove_url(dict):
     dict['body'] = re.sub(reg, "", dict['body'])
 
     return dict
+
+print(parse_mail('test/test_mail/76.recoded'))
