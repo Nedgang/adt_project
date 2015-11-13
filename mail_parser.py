@@ -90,8 +90,6 @@ def dc_remove_url(dict):
     '''
         Small correction of text, remove URLs in the mail body
         This regexp isn't an optimized one (see https://mathiasbynens.be/demo/url-regex)
-        Sometimes, sacrificing goats to Satan isn't enough to get your regexp,
-        sometimes you also need a bit of unicorn's power
     '''
     reg = re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+") # ultra black magic
     dict['body'] = re.sub(reg, "", dict['body'])
