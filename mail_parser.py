@@ -25,7 +25,7 @@ def parse_mail(file_in):
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
         formated_mail = {
-            "body":     raw_mail.get_payload(),
+            "body":     raw_mail.get_payload(decode=True),
             "subject":  raw_mail['subject'],
         }
 
@@ -74,32 +74,12 @@ def fc_remove_blank_lines(file_in):
         INFILE.write(new_body)
 
 
-# DATA_CORRECTION
-def dc_remove_adresses(dict):
+def fc_correct_subject_encoding(file_in):
     '''
-        Small correction of text, remove email adresses in the mail body
+        Correct the bad encoding in subject of emails
     '''
-    reg = re.compile("([a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_"
-                    "`{|}~-]+)*(@|\sat\s)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(\."
-                    "|\sdot\s))+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)") # black magic
-    dict['body'] = re.sub(reg, "", dict['body'])
 
-    return dict
-
-def dc_remove_url(dict):
-    '''
-        Small correction of text, remove URLs in the mail body
-        This regexp isn't an optimized one (see https://mathiasbynens.be/demo/url-regex)
-    '''
-    reg = re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+") # ultra black magic
-    dict['body'] = re.sub(reg, "", dict['body'])
-
-    return dict
-
-
-
-'''
-    with open(file_in, 'a') as s_file:
+    with open(file_in, 'a') as INFILE:
         ugly_subject = msg.get('subject', None)
 
         # No subject in header
@@ -121,4 +101,24 @@ def dc_remove_url(dict):
                 finally:
                     s_file.write(clean_subject + '\n')
 
-'''
+# DATA_CORRECTION
+def dc_remove_adresses(dict):
+    '''
+        Small correction of text, remove email adresses in the mail body
+    '''
+    reg = re.compile("([a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_"
+                    "`{|}~-]+)*(@|\sat\s)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(\."
+                    "|\sdot\s))+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)") # black magic
+    dict['body'] = re.sub(reg, "", dict['body'])
+
+    return dict
+
+def dc_remove_url(dict):
+    '''
+        Small correction of text, remove URLs in the mail body
+        This regexp isn't an optimized one (see https://mathiasbynens.be/demo/url-regex)
+    '''
+    reg = re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+") # ultra black magic
+    dict['body'] = re.sub(reg, "", dict['body'])
+
+    return dict
