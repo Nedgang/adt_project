@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This project extract terms (simples and complex), from a mail corpus.
+This project extract terms (simples and complex) from a mail corpus, group them
+by families, show the trends...
 
 Usage:
     ./__main__.py (--input=<repository>) (--output=<file>) [options]
@@ -35,15 +36,15 @@ import tokenization
 import filtration
 # Extract mails differents parts
 import mail_parser
-# Terms racinisation
+# Terms stemming
 import stemming
-# Detect wich language is used in the email.
+# Detect which language is used in the email
 import language_detection
 # Manage stop words
 import stop_word
 # Smart terms counter (both simple and complex terms)
 import terms_counter
-# Create stockage structure.
+# Create stockage structure
 import inverted_index
 # add comment
 import tag2terms
@@ -62,11 +63,11 @@ def main(arg):
         # Read the mail
         mail = mail_parser.parse_mail(mail_path)
 
-        # Determinate language of mail
+        # Determine language of mail
         mail["lang"] = language_detection.get_language(mail['body'],
                                                        stopword.get_stopword())
 
-        # Tokenize filter and stemme body and subject
+        # Tokenize, filter and stem body and subject
         for field in ('body', 'subject'):
             mail[field] = stemming.stemme_list(
                 filtration.filtration(
@@ -92,7 +93,7 @@ def main(arg):
 
         mail_parser.write_json(mail, jsonout_name)
 
-    # Use mail_parser.write_json for no mail but is very usefule function
+    # Use mail_parser.write_json for no mail but is very usefull function
     tagterms.serialize(arg["output"] + "tag2terms.json")
 
 #############
@@ -100,7 +101,7 @@ def main(arg):
 #############
 def get_mails(arg):
     """
-    This function return a set of mails contained in a directory.
+    This function return a set of mails contained in a directory
     arg = directory path.
     """
     for directory in glob.glob(arg+"/*"):

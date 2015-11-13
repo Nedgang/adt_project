@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 """
-This library allow to filtrate a set of term, deleting non-terms words, using
-a stop words list.
+This library allows to filter a set of terms, deleting non-valuable words using
+a list of stop-words
 """
 
 ##########
@@ -18,8 +18,8 @@ import re
 
 def filtration(token, stopword, language):
     """
-    Filtrate each token, depending of a stopword set and the language.
-    Return a list of string.
+    Filter each token, depending on a stopword set and the language
+    Return a list of string
     token = a list
     stopword = stopword object (cf stopwords.py)
     language = string (french or english)
@@ -36,8 +36,8 @@ def filtration(token, stopword, language):
 
 def __valid_word(word, stopword, language):
     """
-    Check if the word is in the stopword list.
-    Return a boolean.
+    Check if the word is in the stopword list
+    Return a boolean
     word = string
     stopword = stopword object (cf stopwords.py)
     language = string (french or english)
