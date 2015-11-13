@@ -113,5 +113,3 @@ def dc_correct_body_encoding(dict):
     dict['body'] = bstr.decode(encoding)
 
     return dict
-
-print(dc_correct_encoding(parse_mail('test/test_mail/82.recoded')))
