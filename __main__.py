@@ -14,7 +14,7 @@ Options:
     --stopword_en=<file>        English stop words file.(default value include)
 
 Authors:
-    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérôme.
+    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérome.
 """
 
 ##########
@@ -55,7 +55,7 @@ def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
     tagterms = tag2terms.Tag2Terms()
-    
+
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
@@ -65,7 +65,7 @@ def main(arg):
         # Determinate language of mail
         mail["lang"] = language_detection.get_language(mail['body'],
                                                        stopword.get_stopword())
-        
+
         # Tokenize filter and stemme body and subject
         for field in ('body', 'subject'):
             mail[field] = stemming.stemme_list(
@@ -76,12 +76,12 @@ def main(arg):
                 mail["lang"])
 
         # Compute simple and complex terms for body
-        mail['body_terms'] = terms_counter.complexe(mail['body']) 
+        mail['body_terms'] = terms_counter.complexe(mail['body'])
         mail['body_terms'].update(terms_counter.simple(mail['body']))
 
         # Compute simple terms for subject
         mail['subject_terms'] = terms_counter.simple(mail['subject'])
-        
+
         # Write mail
         jsonout_name = arg["output"]
         jsonout_name += mail["name"]
@@ -89,7 +89,7 @@ def main(arg):
 
         # add this mail in tag2terms
         tagterms.add_mail(mail)
-        
+
         mail_parser.write_json(mail, jsonout_name)
 
     # Use mail_parser.write_json for no mail but is very usefule function

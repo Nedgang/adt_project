@@ -28,6 +28,7 @@ def parse_mail(file_in):
         formated_mail = {
             "body":     raw_mail.get_payload(decode=True),
             "subject":  raw_mail['subject'],
+            "encoding": raw_mail['content-type']
         }
 
     if formated_mail['subject'] is not None:
@@ -38,7 +39,6 @@ def parse_mail(file_in):
     formated_mail['name'] = date+name
 
     return formated_mail
-
 
 def write_json(dico, fileout):
     """
@@ -98,4 +98,20 @@ def dc_remove_url(dict):
 
     return dict
 
-print(parse_mail('test/test_mail/76.recoded'))
+def dc_correct_body_encoding(dict):
+    '''
+        Encoding correction for mail body, we want an utf-8 encoded text from
+        the given charset in the mail
+    '''
+    # Extract the original charset of mail
+    reg = re.compile('charset=([^\s;]+)')
+    encoding = re.search(reg, dict['encoding']).group(1)
+
+    # Convert <str> to <bytes> then decode (default to unicode)
+    # (Python3 requirement for encoding/decoding operation)
+    bstr = bytes(dict['body'])
+    dict['body'] = bstr.decode(encoding)
+
+    return dict
+
+print(dc_correct_encoding(parse_mail('test/test_mail/82.recoded')))
