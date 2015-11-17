@@ -19,7 +19,8 @@ def get_language(tokens, stopwords):
     """
 
     languages_ratios = dict()
-    words = [word.lower() for word in tokens]
+
+    words = [str(word).lower() for word in tokens]
 
     for language in stopwords.keys():
         words_set = set(words)
