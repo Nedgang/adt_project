@@ -12,6 +12,6 @@ Optional :
 If you want run programme on sfbi mail archives you can use :
 
 ```python
-./__main__.py -i data/corpus_mail -o output/
+./parse_data.py -i data/corpus_mail -o output/
 ```
 
