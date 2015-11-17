@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This project extract terms (simples and complex), from a mail corpus.
+This project extract terms (simples and complex) from a mail corpus, group them
+by families, show the trends...
 
 Usage:
     ./__main__.py (--input=<repository>) (--output=<file>) [options]
@@ -14,7 +15,7 @@ Options:
     --stopword_en=<file>        English stop words file.(default value include)
 
 Authors:
-    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérôme.
+    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérome.
 """
 
 ##########
@@ -35,15 +36,15 @@ import tokenization
 import filtration
 # Extract mails differents parts
 import mail_parser
-# Terms racinisation
+# Terms stemming
 import stemming
-# Detect wich language is used in the email.
+# Detect which language is used in the email
 import language_detection
 # Manage stop words
 import stop_word
 # Smart terms counter (both simple and complex terms)
 import terms_counter
-# Create stockage structure.
+# Create stockage structure
 import inverted_index
 # add comment
 import tag2terms
@@ -55,18 +56,18 @@ def main(arg):
 
     stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
     tagterms = tag2terms.Tag2Terms()
-    
+
     # Take all mail, and just mail
     for mail_path in get_mails(arg["input"]):
 
         # Read the mail
         mail = mail_parser.parse_mail(mail_path)
 
-        # Determinate language of mail
+        # Determine language of mail
         mail["lang"] = language_detection.get_language(mail['body'],
                                                        stopword.get_stopword())
-        
-        # Tokenize filter and stemme body and subject
+
+        # Tokenize, filter and stem body and subject
         for field in ('body', 'subject'):
             mail[field] = stemming.stemme_list(
                 filtration.filtration(
@@ -76,12 +77,12 @@ def main(arg):
                 mail["lang"])
 
         # Compute simple and complex terms for body
-        mail['body_terms'] = terms_counter.complexe(mail['body']) 
+        mail['body_terms'] = terms_counter.complexe(mail['body'])
         mail['body_terms'].update(terms_counter.simple(mail['body']))
 
         # Compute simple terms for subject
         mail['subject_terms'] = terms_counter.simple(mail['subject'])
-        
+
         # Write mail
         jsonout_name = arg["output"]
         jsonout_name += mail["name"]
@@ -89,10 +90,10 @@ def main(arg):
 
         # add this mail in tag2terms
         tagterms.add_mail(mail)
-        
+
         mail_parser.write_json(mail, jsonout_name)
 
-    # Use mail_parser.write_json for no mail but is very usefule function
+    # Use mail_parser.write_json for no mail but is very usefull function
     tagterms.serialize(arg["output"] + "tag2terms.json")
 
 #############
@@ -100,7 +101,7 @@ def main(arg):
 #############
 def get_mails(arg):
     """
-    This function return a set of mails contained in a directory.
+    This function return a set of mails contained in a directory
     arg = directory path.
     """
     for directory in glob.glob(arg+"/*"):

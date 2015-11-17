@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf8 -*-
 
 
@@ -22,7 +21,9 @@ class StopWord:
                               "\'", "<", ">", "=", "«", "»", "#")
 
     def __readfilter(self, filename):
-        """Warning this is private function didn't use please kiss"""
+        """
+        
+        """
 
         word_filter = set()
         with open(filename, "r") as filtr_list:

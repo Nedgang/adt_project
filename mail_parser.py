@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf8 -*-
-
 
 ##########
 # IMPORT #
 ##########
-import os, sys
+import os
+import sys
 from email.parser import Parser
+from email.header import decode_header, make_header
 import email.header
 import json
 import re
@@ -18,17 +18,21 @@ def parse_mail(file_in):
         Extract Subject & Body of mail file
         headers must be formatted as a block of RFC 2822 style
 
-        input:  file
+        input:  file path
         output: dict
     """
-
+    
+    # We open the file and then divide it in different parts.
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
         formated_mail = {
-            "body":     raw_mail.get_payload(),
+            "body":     raw_mail.get_payload(decode=True),
             "subject":  raw_mail['subject'],
+            "encoding": raw_mail['content-type']
         }
 
+    if formated_mail['subject'] is not None:
+        formated_mail['subject'] = str(make_header(decode_header(formated_mail['subject'])))
 
     date = os.path.dirname(file_in).split('/').pop() + '-'
     name = os.path.splitext(os.path.basename(file_in))[0]
@@ -36,12 +40,9 @@ def parse_mail(file_in):
 
     return formated_mail
 
-
 def write_json(dico, fileout):
     """
-        Write dict into json-styled file
-        Je collectionne les canards...
-        ... vivants !
+        Write dict into json file
 
         input:  dict
         output: json file
@@ -73,7 +74,6 @@ def fc_remove_blank_lines(file_in):
     with open(file_in, 'w') as INFILE:
         INFILE.write(new_body)
 
-
 # DATA_CORRECTION
 def dc_remove_adresses(dict):
     '''
@@ -90,37 +90,24 @@ def dc_remove_url(dict):
     '''
         Small correction of text, remove URLs in the mail body
         This regexp isn't an optimized one (see https://mathiasbynens.be/demo/url-regex)
-        Sometimes, sacrificing goats to Satan isn't enough to get your regexp,
-        sometimes you also need a bit of unicorn's power
     '''
     reg = re.compile("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+") # ultra black magic
     dict['body'] = re.sub(reg, "", dict['body'])
 
     return dict
 
+def dc_correct_body_encoding(dict):
+    '''
+        Encoding correction for mail body, we want an utf-8 encoded text from
+        the given charset in the mail
+    '''
+    # Extract the original charset of mail
+    reg = re.compile('charset=([^\s;]+)')
+    encoding = re.search(reg, dict['encoding']).group(1)
 
+    # Convert <str> to <bytes> then decode (default to unicode)
+    # (Python3 requirement for encoding/decoding operation)
+    bstr = bytes(dict['body'])
+    dict['body'] = bstr.decode(encoding)
 
-'''
-    with open(file_in, 'a') as s_file:
-        ugly_subject = msg.get('subject', None)
-
-        # No subject in header
-        if ugly_subject is not None:
-
-            # Multiple spaces (2)
-            ugly_subject = re.sub('[ ]{2}', '', ugly_subject)
-            r = decode_header(ugly_subject)
-
-            # No decoding required => [(entire chain)]
-            if len(r) > 1:
-                # Subject does not meet the RFC2047 :-(
-                try:
-                    clean_subject = ''.join(txt.decode(enc or "utf-8")
-                                            for txt, enc in r)
-                except:
-                    clean_subject = "ERROR: " + email_file_path + \
-                                    ";" + ugly_subject
-                finally:
-                    s_file.write(clean_subject + '\n')
-
-'''
+    return dict

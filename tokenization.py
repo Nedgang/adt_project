@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf8 -*-
 
 # import
@@ -7,6 +6,9 @@ import nltk.tokenize
 
 
 def this_string(string):
+    """
+    Take a string and return a list of token.
+    """
     reg_words = r'''(?x)
     \d+(\.\d+)?\s*%
     | 's

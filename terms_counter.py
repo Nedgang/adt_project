@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Analyze a list of words, and search for complex terms.
+Analyze a list of words and search for complex terms.
 Return a list of simple and complex terms.
 """
 
@@ -17,19 +17,19 @@ from nltk.util import ngrams
 ########
 def complexe(list_words, complex_size=2, threshold=2):
     """
-    This function will analyze a list of words and search for complexe termes.
+    Analyze a list of words and search for complexe terms.
     Take a list in entry, with the words in the text order.
-    Return a dictionary, with complex terms and her occurence.
+    Return a dictionary, with complex terms and their occurences.
     """
     association_list = []
 
     # For each word in the list, we take the next one and save the combinaison
     association_list = ngrams(list_words, complex_size)
 
-    # The count of each combinaison will be stocked in a dict
+    # The count of each combinaison will be stored in a dict
     asso_number = Counter(association_list)
 
-    # Remove combinaison will be not count upper than threshold
+    # Remove combinations with score lower than threshold
     complex_terms = __filter_terms(asso_number, threshold)
 
     return complex_terms
@@ -37,12 +37,12 @@ def complexe(list_words, complex_size=2, threshold=2):
 
 def simple(list_words, threshold=1):
     """
-    This function will analyze a list of words and search for complexe termes.
+    Analyze a list of words and search for complexe terms.
     Take a list in entry, with the words in the text order.
-    Return a dictionary, with simple terms and her occurence.
+    Return a dictionary, with simple terms and their occurences.
     """
 
-    # Count all simple terms and remove if isn't upper than threshold
+    # Count all simple terms and remove if lower than threshold
     return __filter_terms(Counter(list_words), threshold)
 
 
@@ -51,12 +51,12 @@ def simple(list_words, threshold=1):
 #############
 def __filter_terms(dic_combinaison, threshold):
     """
-    Take a dictionnary containing each combinaison of termes and return those
+    Take a dictionnary containing each combinations of terms and return those
     which are found k or more time (default k=2).
-    It return a dict, containing each complex term is a key in string form,
-    and value is the numbre is presente in dic_combinaison.
+    It returns a dict, containing each complex term as a key <str>,
+    and value is the number of occurence <int> in dic_combinaison.
     """
-    # Remove all key isn't present upper than k, and replace key tuple by a
+    # Remove all key with score lower than k, and replace key tuple by a
     # string
     return {__key2str(key): dic_combinaison[key] for key in
             dic_combinaison if dic_combinaison[key] >= threshold}
@@ -70,16 +70,6 @@ def __key2str(key):
         return " ".join(key)
     else:
         return key
-
-
-def clean_term_list(list_words, complex_terms):
-    """
-    Take the basic set of terms and the list of complex terms.
-    Return a list containing all the terms, complex and simple.
-    """
-    # We don't want to include simple terms already in complex terms
-    print(complex_terms)
-
 
 ########
 # TEST #
