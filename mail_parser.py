@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-
 # -*- coding: utf8 -*-
-
 
 ##########
 # IMPORT #
 ##########
-import os, sys
+import os
+import sys
 from email.parser import Parser
 from email.header import decode_header, make_header
 import email.header
@@ -19,10 +18,11 @@ def parse_mail(file_in):
         Extract Subject & Body of mail file
         headers must be formatted as a block of RFC 2822 style
 
-        input:  file
+        input:  file path
         output: dict
     """
-
+    
+    # We open the file and then divide it in different parts.
     with open(file_in, 'r') as INFILE:
         raw_mail = Parser().parse(INFILE)
         formated_mail = {
@@ -43,8 +43,6 @@ def parse_mail(file_in):
 def write_json(dico, fileout):
     """
         Write dict into json file
-        Je collectionne les canards...
-        ... vivants !
 
         input:  dict
         output: json file
