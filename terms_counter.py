@@ -17,7 +17,7 @@ from nltk.util import ngrams
 ########
 def complexe(list_words, complex_size=2, threshold=2):
     """
-    This function will analyze a list of words and search for complexe terms.
+    Analyze a list of words and search for complexe terms.
     Take a list in entry, with the words in the text order.
     Return a dictionary, with complex terms and their occurences.
     """
@@ -37,7 +37,7 @@ def complexe(list_words, complex_size=2, threshold=2):
 
 def simple(list_words, threshold=1):
     """
-    This function will analyze a list of words and search for complexe terms.
+    Analyze a list of words and search for complexe terms.
     Take a list in entry, with the words in the text order.
     Return a dictionary, with simple terms and their occurences.
     """
@@ -70,21 +70,6 @@ def __key2str(key):
         return " ".join(key)
     else:
         return key
-
-def clean_term_list(list_words, complex_terms):
-#########
-# @TODO #
-#########
-    """
-    Take the basic set of terms and the list of complex terms.
-    Return a list containing all the terms, complex and simple.
-    """
-    # We don't want to include simple terms already in complex terms
-    print(complex_terms)
-#############
-# END @TODO #
-#############
-
 
 ########
 # TEST #
