@@ -23,8 +23,6 @@ Authors:
 ##########
 # EXISTANT LIBRARY
 import glob
-import nltk
-import os
 import sys
 
 # SPECIFIC LIBRARY
@@ -34,7 +32,7 @@ import cli_parser
 import tokenization
 # Used to remove words which are not terms
 import filtration
-# Extract mails differents parts
+# Extract mails differents parts
 import mail_parser
 # Terms stemming
 import stemming
@@ -45,14 +43,14 @@ import stop_word
 # Smart terms counter (both simple and complex terms)
 import terms_counter
 # Create stockage structure
-import inverted_index
-# add comment
 import tag2terms
+
 
 ########
 # MAIN #
 ########
 def main(arg):
+    """ Main function of email parser """
 
     stopword = stop_word.StopWord(arg["stopword_fr"], arg["stopword_en"])
     tagterms = tag2terms.Tag2Terms()
@@ -91,10 +89,13 @@ def main(arg):
         # add this mail in tag2terms
         tagterms.add_mail(mail)
 
-        mail_parser.write_json(mail, jsonout_name)
+        # Write result of email parsing in file just if debug mode is activate
+        if arg["debug"]:
+            mail_parser.write_json(mail, jsonout_name)
 
-    # Use mail_parser.write_json for no mail but is very usefull function
+    # Store result of analysis
     tagterms.serialize(arg["output"] + "tag2terms.json")
+
 
 #############
 # FUNCTIONS #
@@ -108,6 +109,7 @@ def get_mails(arg):
         for mail in glob.glob(directory+"/*"):
             if not mail.endswith(".txt"):
                 yield mail
+
 
 ##########
 # LAUNCH #

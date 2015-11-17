@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+
 # -*- coding: utf8 -*-
+
 """
 This library provide the command line analyse, and verification.
 """
@@ -8,12 +10,12 @@ import argparse
 import os
 
 
-def read_arg(args):
-    """ Read cli argument and check if content the good value """
+def parser_read_arg(args):
+    """ Read cli argument and check if content the good value for parser"""
 
-    parser = __create_parser()
+    parser = __parser_create_parser()
 
-    arg = vars(parser.parse_args())
+    arg = vars(parser.parse_args(args))
 
     if arg["unicorn"]:
         __unicorn()
@@ -29,26 +31,10 @@ def read_arg(args):
     return arg
 
 
-def __stopword():
-    """ Try if nltk stop word is download if not propose to download it """
-    try:
-        from nltk.corpus import stopwords
-    except ImportError:
-        answer = input("You want download nltk stopword [y/n] : ")
-        while answer.lower() not in ['y', 'n']:
-            answer = input("Please answer with [y/n] : ")
+def __parser_create_parser():
+    """ Create the parser of argument for email parser """
 
-        if answer.lower() == y:
-            import nltk
-            return nltk.download("stopwords")
-        else:
-            return false
-
-
-def __create_parser():
-    """ Create the parser of argument """
-
-    parser = argparse.ArgumentParser(prog="adt_project",
+    parser = argparse.ArgumentParser(prog="adt project email parser",
                                      formatter_class=argparse.
                                      ArgumentDefaultsHelpFormatter)
 
@@ -62,11 +48,86 @@ def __create_parser():
     parser.add_argument("--stopword-en", type=__isfile,
                         help="We use english stop word file.")
 
+    parser.add_argument("-d", "--debug", action='store_true',
+                        help="Activate debug mode")
+
     # easter egg
     parser.add_argument("--unicorn", action='store_true',
                         help=argparse.SUPPRESS)
 
     return parser
+
+
+def analysis_read_args(args):
+    """Read cli argument and check if content the good value for analise"""
+
+    parser = __parser_create_parser()
+
+    arg = vars(parser.parse_args(args))
+
+    if arg["unicorn"]:
+        __unicorn()
+
+    if arg["all_terms"] and arg["best_terms"] and arg["strict_terms"]:
+        print("We can't use many terms option in same time")
+        return None
+
+    if arg["query"] and not (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
+        print("Query need you use terms option")
+        return None
+  
+    if (not arg["threshold"]) and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]) :
+        print("We need threshold value when you use terms option")
+        return None
+        
+    if (arg["all_terms"] and arg["best_terms"]) or (arg["all_terms"] and arg["strict_terms"]) or (arg["best_terms"] and arg["strict_terms"]) :
+        print("We can't use some terms option sorry.")
+        return None
+    
+    return arg
+
+
+def __analysis_create_parser():
+    """Create the parser of argument for analyse tools """
+    
+    parser = argparse.ArgumentParser(prog="adt project analyze",
+                                     formatter_class=argparse.
+                                     ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument("-i", "--input", type=__isfile, required=True,
+                        help="file content the result of parser")
+    parser.add_argument("-q", "--query", type=str, help="tag you query")
+    parser.add_argument("-p", "--print-tag", action='store_true',
+                        help="print all tag, default action")
+    parser.add_argument("-a", "--all-terms", action='store_true',
+                        help="print all terms in each tag")
+    parser.add_argument("-b", "--best-terms", action='store_true',
+                        help="print terms with good score")
+    parser.add_argument("-s", "--strict-terms", action='store_true',
+                        help="print just terms is in all tags")
+    parser.add_argument("-t", "--threshold", type=float,
+                        help="didn't print terms with lower threshold")
+
+    # easter egg
+    parser.add_argument("--unicorn", action='store_true',
+                        help=argparse.SUPPRESS)
+
+    return parser
+
+def __stopword():
+    """ Try if nltk stop word is download if not propose to download it """
+    try:
+        from nltk.corpus import stopwords
+    except ImportError:
+        answer = input("You want download nltk stopword [y/n] : ")
+        while answer.lower() not in ['y', 'n']:
+            answer = input("Please answer with [y/n] : ")
+
+        if answer.lower() == "y":
+            import nltk
+            return nltk.download("stopwords")
+        else:
+            return False
 
 
 def __isfile(val):
