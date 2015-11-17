@@ -5,7 +5,7 @@ This project extract terms (simples and complex) from a mail corpus, group them
 by families, show the trends...
 
 Usage:
-    ./__main__.py (--input=<repository>) (--output=<file>) [options]
+    ./parse_email.py (--input=<repository>) (--output=<file>) [options]
 
 Options:
     --help, -h                  Show help message.
@@ -13,6 +13,7 @@ Options:
     --output, -o=<file>         The _ file with results.
     --stopword_fr=<file>        French stop words file. (default value include)
     --stopword_en=<file>        English stop words file.(default value include)
+    --debug                     Activate debug mode
 
 Authors:
     MARIJON Pierre, PICARD DRUET David,  PIVERT Jérome.
@@ -115,7 +116,7 @@ def get_mails(arg):
 # LAUNCH #
 ##########
 if __name__ == "__main__":
-    arg = cli_parser.read_arg(sys.argv)
+    arg = cli_parser.parser_read_arg(sys.argv[1:])
     if(arg is None):
         sys.exit(1)
 
