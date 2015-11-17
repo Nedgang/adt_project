@@ -61,7 +61,7 @@ def __parser_create_parser():
 def analysis_read_args(args):
     """Read cli argument and check if content the good value for analise"""
 
-    parser = __parser_create_parser()
+    parser = __analysis_create_parser()
 
     arg = vars(parser.parse_args(args))
 
