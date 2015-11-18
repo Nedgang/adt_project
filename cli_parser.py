@@ -75,8 +75,8 @@ def analysis_read_args(args):
     if arg["query"] and not (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
         print("Query need you use terms option")
         return None
-  
-    if (not arg["threshold"]) and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]) :
+
+    if arg["threshold"] == None and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]) :
         print("We need threshold value when you use terms option")
         return None
         
@@ -96,7 +96,8 @@ def __analysis_create_parser():
 
     parser.add_argument("-i", "--input", type=__isfile, required=True,
                         help="file content the result of parser")
-    parser.add_argument("-q", "--query", type=str, help="tag you query")
+    parser.add_argument("-q", "--query", nargs='+', type=str,
+                        help="tag you query")
     parser.add_argument("-p", "--print-tag", action='store_true',
                         help="print all tag, default action")
     parser.add_argument("-a", "--all-terms", action='store_true',

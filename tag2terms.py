@@ -23,4 +23,11 @@ class Tag2Terms:
     def read_file(self, filename):
         with open(filename, "r") as infile:
             self.__tag2terms.update(json.load(infile)) 
-        
+
+    def get_tag(self):
+        return self.__tag2terms.keys()
+            
+    def get_terms(self, tag):
+        return self.__tag2terms[tag]
+
+    

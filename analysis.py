@@ -48,6 +48,34 @@ def main(arg):
 
     tagterms.read_file(arg["input"])
 
+    terms_list = list()
+
+    if arg["print_tag"]:
+        print_tag(tagterms)
+    
+    if arg["all_terms"]:
+        print_all_terms(tagterms, arg["query"], arg["threshold"])
+
+def print_tag(tagterms):
+    """ Print all tag in data base """
+
+    for tag in sorted(tagterms.get_tag()):
+        print(tag)
+
+
+def print_all_terms(tagterms, query, threshold):
+    """ Print all terms is in query tag """
+
+    all_terms = dict()
+    
+    for tag in arg["query"]:
+        all_terms.update(tagterms.get_terms(tag))
+    
+    selected_terms = [k for k in all_terms.keys() if all_terms[k] > threshold]
+    
+    print(selected_terms)
+
+
 ##########
 # LAUNCH #
 ##########
