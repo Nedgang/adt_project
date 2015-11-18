@@ -70,8 +70,12 @@ def print_all_terms(tagterms, query, threshold):
     
     for tag in arg["query"]:
         all_terms.update(tagterms.get_terms(tag))
-    
-    selected_terms = [k for k in all_terms.keys() if all_terms[k] > threshold]
+
+    sorted_terms = list()
+    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in all_terms.items()], reverse=True)]
+
+    selected_terms = [k for (k,v) in sorted_terms if v > threshold]
+
     
     print(selected_terms)
 
