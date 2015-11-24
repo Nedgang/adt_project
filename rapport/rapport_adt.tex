@@ -1,0 +1,65 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+%\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\author{MARIJON Pierre, PIVERT Jérôme, PICARD DRUET David}
+\title{Rapport projet Analyse de Données Textuelles}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problématique}
+Notre problématique était d'extraire les termes présents dans un ensemble de mails, provenant de la liste de diffusion de la SFBI sur la période d'un an. Ces termes devaient ensuite être associées à des mots clefs. \textbf{Pas satisfait de la formulation, à ajuster. Il faut plus préciser sur les données}
+
+L'idée était de pouvoir obtenir, à partir des mails, les termes associés aux différents thèmes de la bioinformatique. Il fallait également éviter d'utiliser les librairies déjà existantes sur le sujet, en dehors de NLTK.
+
+Enfin, il fallait pouvoir évaluer la qualité et la quantité de données récupérées, ainsi que les limites de notre méthode d'extraction de terminologie.
+
+
+\section*{Conception du programme}
+\subsection*{Workflow}
+% Itemisation temporaire? faire des sous sections pour chaque étape et détailler les modules.
+\begin{itemize}
+    \item Parsing des mails: récupération du corps et du sujet de chaque mail.
+    \item Tokenisation
+    \item Filtration
+    \item Racinisation/Lemmatisation
+\end{itemize}
+
+\subsection*{Association thème et termes}
+3 méthodes:
+- thème = tout les termes qui y sont associés, en vrac.
+- thème = chaque terme associé, avec une valeur de pondération dépendant du nombre de fois que le terme a été trouvé.
+- thème = terme trouvé dans TOUT les mails avec ce thème.
+
+\subsection*{Utilisation}
+Le programme a été conçu pour être utilisé en console, en ligne de commande.
+
+Usage:\\
+    ./parse\_email.py (--input=<repository>) (--output=<file>) [options]\\
+
+Options:\\
+    --help, -h                  Show help message.\\
+    --input, -i=<repository>    The directory containing all data.\\
+    --output, -o=<file>         The file with results.\\
+    --stopword\_fr=<file>       French stop words file. (default value include)\\
+    --stopword\_en=<file>       English stop words file.(default value include)\\
+    --debug                     Activate debug mode\\
+
+
+\section*{Évaluation des résultats obtenus}
+
+\section*{Améliorations, alternatives}
+
+\section*{Conclusion}
+
+\end{document}
