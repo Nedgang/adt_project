@@ -52,10 +52,21 @@ def main(arg):
 
     if arg["print_tag"]:
         print_tag(tagterms)
-    
+        return 0
+        
     if arg["all_terms"]:
         print_all_terms(tagterms, arg["query"], arg["threshold"])
-
+        return 0
+        
+    if arg["best_terms"]:
+        print_best_terms(tagterms, arg["query"], arg["threshold"])
+        return 0
+        
+    if arg["strict_terms"]:
+        print_strict_terms(tagterms, arg["query"], arg["threshold"])
+        return 0
+        
+    
 def print_tag(tagterms):
     """ Print all tag in data base """
 
@@ -78,6 +89,16 @@ def print_all_terms(tagterms, query, threshold):
 
     
     print(selected_terms)
+
+
+def print_best_terms(tagterms, query, threshold):
+    """ If terms is presente in some tag increasse score """
+    pass
+
+
+def print_strict_terms(tagterms, query, threshold):
+    """ Print just terms is in all tag query """
+    pass
 
 
 ##########
