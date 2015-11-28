@@ -6,9 +6,7 @@
 ##########
 import os
 import sys
-from email.parser import Parser
-from email.header import decode_header, make_header
-import email.header
+import email
 import json
 import re
 
@@ -23,16 +21,15 @@ def parse_mail(file_in):
     """
     
     # We open the file and then divide it in different parts.
-    with open(file_in, 'r') as INFILE:
-        raw_mail = Parser().parse(INFILE)
+    with open(file_in, 'rb') as INFILE:
+        raw_mail = email.message_from_binary_file(INFILE)
+        charset = raw_mail.get_charsets()[0]
         formated_mail = {
-            "body":     raw_mail.get_payload(decode=True),
-            "subject":  raw_mail['subject'],
+            "body": raw_mail.get_payload(decode=True).decode(charset),
+            "subject": str(email.header.make_header(email.header.decode_header(raw_mail["Subject"])))
+,
             "encoding": raw_mail['content-type']
         }
-
-    if formated_mail['subject'] is not None:
-        formated_mail['subject'] = str(make_header(decode_header(formated_mail['subject'])))
 
     date = os.path.dirname(file_in).split('/').pop() + '-'
     name = os.path.splitext(os.path.basename(file_in))[0]
