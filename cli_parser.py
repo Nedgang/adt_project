@@ -94,7 +94,7 @@ def __analysis_create_parser():
                                      formatter_class=argparse.
                                      ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument("-i", "--input", type=__isfile, required=True,
+    parser.add_argument("-i", "--input", type=str, required=True,
                         help="file content the result of parser")
     parser.add_argument("-q", "--query", nargs='+', type=str,
                         help="tag you query")

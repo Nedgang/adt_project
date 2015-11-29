@@ -4,6 +4,7 @@
 
 # std import
 import json
+import math
 from collections import defaultdict
 
 class Tag2Terms:
@@ -25,10 +26,10 @@ class Tag2Terms:
             json.dump(self.__dfidf, out, ensure_ascii=False)
             
     def read_file(self, basename):
-        with open(basename+"_count", "r") as infile:
+        with open(basename+"_count.json", "r") as infile:
             self.__tag2terms.update(json.load(infile)) 
 
-        with open(basename+"_score", "r") as infile:
+        with open(basename+"_score.json", "r") as infile:
             self.__dfidf.update(json.load(infile)) 
 
             
@@ -39,15 +40,15 @@ class Tag2Terms:
         return self.__tag2terms[tag]
 
     def compute(self):
-        for tag in self.__tag2terms.keys:
-            for terms in self.__tag2terms[tag].keys:
+        for tag in self.__tag2terms.keys():
+            for terms in self.__tag2terms[tag].keys():
                 tf = self.__tag2terms[tag][terms]
                 df = self.__df4terms(terms)
-                self.__dfidf[tag][terms] = tf/df
+                self.__dfidf[tag][terms] = math.log(tf/df)
                 
     def __df4terms(self, terms):
         ret = 0
-        for tag in self.__tag2terms.keys:
+        for tag in self.__tag2terms.keys():
             if terms in self.__tag2terms[tag]:
                 ret += 1
 
