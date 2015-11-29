@@ -31,7 +31,6 @@ class Tag2Terms:
 
         with open(basename+"_score.json", "r") as infile:
             self.__dfidf.update(json.load(infile)) 
-
             
     def get_tag(self):
         return self.__tag2terms.keys()
@@ -39,12 +38,18 @@ class Tag2Terms:
     def get_terms(self, tag):
         return self.__tag2terms[tag]
 
+    def get_tag_score(self):
+        return self.__dfidf.keys()
+            
+    def get_terms_score(self, tag):
+        return self.__dfidf[tag]
+    
     def compute(self):
         for tag in self.__tag2terms.keys():
             for terms in self.__tag2terms[tag].keys():
                 tf = self.__tag2terms[tag][terms]
                 df = self.__df4terms(terms)
-                self.__dfidf[tag][terms] = math.log(tf/df)
+                self.__dfidf[tag][terms] = math.log(tf/df) * -1
                 
     def __df4terms(self, terms):
         ret = 0

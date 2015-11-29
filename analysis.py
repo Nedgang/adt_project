@@ -37,6 +37,7 @@ import terms_counter
 # Create stockage structure
 import tag2terms
 
+from collections import defaultdict
 
 ########
 # MAIN #
@@ -79,28 +80,65 @@ def print_all_terms(tagterms, query, threshold):
 
     all_terms = dict()
     
-    for tag in arg["query"]:
-        all_terms.update(tagterms.get_terms(tag))
+    for tag in query:
+        all_terms.update(tagterms.get_terms_score(tag))
+        
+    selected_terms = {k: v for (k,v) in all_terms.items() if v > threshold}
 
     sorted_terms = list()
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in all_terms.items()], reverse=True)]
-
-    selected_terms = [k for (k,v) in sorted_terms if v > threshold]
-
     
-    print(selected_terms)
+    print(sorted_terms)
 
 
-def print_best_terms(tagterms, query, threshold):
+def print_best_terms(tagterms, query, threshold, bonus=1.5):
     """ If terms is presente in some tag increasse score """
-    pass
+
+    all_terms = list()
+
+    for tag in query:
+        all_terms.append(tagterms.get_terms_score(tag).keys())
+        
+    enrich_terms = defaultdict(int)
+    for tag in arg["query"]:
+        for terms in tagterms.get_terms_score(tag).keys():
+            if terms in all_terms :
+                enrich_terms[terms] += tagterms.get_terms_score(tag)[terms] * bonus
+            else:
+                enrich_terms[terms] += tagterms.get_terms_score(tag)[terms] * bonus
 
 
+    selected_terms = {k: v for (k,v) in enrich_terms.items() if v > threshold}
+                
+    sorted_terms = list()
+    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
+
+    print(sorted_terms)
+
+                
 def print_strict_terms(tagterms, query, threshold):
     """ Print just terms is in all tag query """
-    pass
 
+    # Find selected terms
+    list_of_set = list()
 
+    for tag in query:
+        list_of_set.append(set(tagterms.get_terms(tag).keys()))
+        
+    keep_terms = set.intersection(*list_of_set)
+    
+    all_terms = dict()
+    
+    for tag in query:
+        all_terms.update(tagterms.get_terms_score(tag))
+
+    selected_terms = {k: v for (k,v) in all_terms.items() if k in keep_terms and v > threshold}
+                
+    sorted_terms = list()
+    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
+
+    print(sorted_terms)
+    
 ##########
 # LAUNCH #
 ##########
