@@ -95,7 +95,8 @@ def main(arg):
             mail_parser.write_json(mail, jsonout_name)
 
     # Store result of analysis
-    tagterms.serialize(arg["output"] + "tag2terms.json")
+    tagterms.compute()
+    tagterms.serialize(arg["output"] + "tag2terms")
 
 
 #############
