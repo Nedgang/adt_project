@@ -19,7 +19,7 @@ def parse_mail(file_in):
         input:  file path
         output: dict
     """
-    
+
     # We open the file and then divide it in different parts.
     with open(file_in, 'rb') as INFILE:
         raw_mail = email.message_from_binary_file(INFILE)
@@ -34,6 +34,9 @@ def parse_mail(file_in):
     date = os.path.dirname(file_in).split('/').pop() + '-'
     name = os.path.splitext(os.path.basename(file_in))[0]
     formated_mail['name'] = date+name
+
+    formated_mail = dc_remove_adresses(formated_mail)
+    formated_mail = dc_remove_url(formated_mail)
 
     return formated_mail
 
