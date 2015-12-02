@@ -5,7 +5,7 @@ This project extract terms (simples and complex) from a mail corpus, group them
 by families, show the trends...
 
 Usage:
-    ./parse_email.py (--input=<repository>) (--output=<file>) [options]
+    ./create_db.py (--input=<repository>) (--output=<file>) [options]
 
 Options:
     --help, -h                  Show help message.
@@ -16,7 +16,7 @@ Options:
     --debug                     Activate debug mode
 
 Authors:
-    MARIJON Pierre, PICARD DRUET David,  PIVERT Jérome.
+    MARIJON Pierre, PICARD DRUET David, PIVERT Jérome.
 """
 
 ##########
