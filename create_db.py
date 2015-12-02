@@ -117,7 +117,7 @@ def get_mails(arg):
 # LAUNCH #
 ##########
 if __name__ == "__main__":
-    arg = cli_parser.parser_read_arg(sys.argv[1:])
+    arg = cli_parser.create_db_read_arg(sys.argv[1:])
     if(arg is None):
         sys.exit(1)
 

@@ -10,10 +10,10 @@ import argparse
 import os
 
 
-def parser_read_arg(args):
-    """ Read cli argument and check if content the good value for parser"""
+def create_db_read_arg(args):
+    """ Read cli argument and check if content the good value for create_db"""
 
-    parser = __parser_create_parser()
+    parser = __create_db_create_parser()
 
     arg = vars(parser.parse_args(args))
 
@@ -31,8 +31,8 @@ def parser_read_arg(args):
     return arg
 
 
-def __parser_create_parser():
-    """ Create the parser of argument for email parser """
+def __create_db_create_parser():
+    """ Create the parser of argument for create_db """
 
     parser = argparse.ArgumentParser(prog="adt project email parser",
                                      formatter_class=argparse.
@@ -68,7 +68,7 @@ def analysis_read_args(args):
     if arg["unicorn"]:
         __unicorn()
 
-    if arg["all_terms"] and arg["best_terms"] and arg["strict_terms"]:
+    if arg["all_terms"] and arg["best_terms"] and arg["strict_terms"] and arg["keywords"]:
         print("We can't use many terms option in same time")
         return None
 
@@ -76,11 +76,15 @@ def analysis_read_args(args):
         print("Query need you use terms option")
         return None
 
+    if arg["keywords"] and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
+        print("We can't use keywords and terms option")
+        return None
+
     if arg["threshold"] == None and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]) :
         print("We need threshold value when you use terms option")
         return None
         
-    if (arg["all_terms"] and arg["best_terms"]) or (arg["all_terms"] and arg["strict_terms"]) or (arg["best_terms"] and arg["strict_terms"]) :
+    if (arg["all_terms"] and arg["best_terms"]) or (arg["all_terms"] and arg["strict_terms"]) or (arg["best_terms"] and arg["strict_terms"]) or ():
         print("We can't use some terms option sorry.")
         return None
     
@@ -106,7 +110,9 @@ def __analysis_create_parser():
                         help="print terms with good score")
     parser.add_argument("-s", "--strict-terms", action='store_true',
                         help="print just terms is in all tags")
-    parser.add_argument("-t", "--threshold", type=float,
+    parser.add_argument("-k", "--keywords", type=int,
+                        help="print n main terms use in corpus")
+    parser.add_argument("-t", "--threshold", type=float, default=1.0,
                         help="didn't print terms with lower threshold")
 
     # easter egg
