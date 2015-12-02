@@ -21,9 +21,9 @@ def get_language(tokens, stopwords):
     languages_ratios = dict()
 
     words = [str(word).lower() for word in tokens]
+    words_set = set(words)
 
     for language in stopwords.keys():
-        words_set = set(words)
         common_elements = words_set.intersection(stopwords[language])
 
         languages_ratios[language] = len(common_elements)  # language score

@@ -42,6 +42,15 @@ def __valid_word(word, stopword, language):
     stopword = stopword object (cf stopwords.py)
     language = string (french or english)
     """
+    # print(word)
+    # print(language)
+    # print(word not in stopword.get_stopword()[language])
+    # print(word not in stopword.get_ponctuation())
+    # print(not re.match("\d+", word))
+    # print(word not in stopword.get_stopword()[language]
+    #         and word not in stopword.get_ponctuation()
+    #         and not re.match("\d+", word))
+    # print("-----------------------------------------")
     return (word not in stopword.get_stopword()[language]
             and word not in stopword.get_ponctuation()
             and not re.match("\d+", word))

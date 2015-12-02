@@ -63,8 +63,10 @@ def main(arg):
         mail = mail_parser.parse_mail(mail_path)
 
         # Determine language of mail
-        mail["lang"] = language_detection.get_language(mail['body'],
+        body_tokenized = tokenization.this_string(mail['body'])
+        mail["lang"] = language_detection.get_language(body_tokenized,
                                                        stopword.get_stopword())
+
 
         # Tokenize, filter and stem body and subject
         for field in ('body', 'subject'):

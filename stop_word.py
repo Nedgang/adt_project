@@ -18,17 +18,18 @@ class StopWord:
             self.__stopword["french"] = self.__readfilter(french)
 
         self.__ponctuation = (",", ";", ".", ":", "(", ")", "\"",
-                              "\'", "<", ">", "=", "«", "»", "#")
+                              "\'", "<", ">", "=", "«", "»", "#", "[", "]", "+",
+                              "%", "*", "/", "¿", "’", "\x92", "- -", "-")
 
     def __readfilter(self, filename):
         """
-        
+
         """
 
         word_filter = set()
         with open(filename, "r") as filtr_list:
             for word in filtr_list:
-                word_filter.add(word)
+                word_filter.add(word.strip())
 
         return word_filter
 
