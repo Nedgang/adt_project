@@ -45,26 +45,31 @@ from collections import defaultdict
 def main(arg):
     """ Main function of analyse """
 
+    # Read database
     tagterms = tag2terms.Tag2Terms()
-
     tagterms.read_file(arg["input"])
 
+    # Just print tag
     if arg["print_tag"]:
         print_tag(tagterms)
         return 0
 
+    # Get all terms is in tag
     if arg["all_terms"]:
         print_all_terms(tagterms, arg["query"], arg["threshold"])
         return 0
 
+    # Terms is in some tag have bonus
     if arg["best_terms"]:
         print_best_terms(tagterms, arg["query"], arg["threshold"])
         return 0
 
+    # Print just terms is in all tag
     if arg["strict_terms"]:
         print_strict_terms(tagterms, arg["query"], arg["threshold"])
         return 0
 
+    # Print the keyword of database
     if arg["keywords"]:
         print_keywords(tagterms, arg["keywords"])
         return 0
@@ -79,13 +84,15 @@ def print_tag(tagterms):
 def print_all_terms(tagterms, query, threshold):
     """ Print all terms is in query tag """
 
+    # Take all terms
     all_terms = dict()
-
     for tag in query:
         all_terms.update(tagterms.get_terms_score(tag))
 
+    # Remove terms with score lower threshold
     selected_terms = {k: v for (k,v) in all_terms.items() if v > threshold}
 
+    # Sorted terms by score
     sorted_terms = list()
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
 
@@ -93,13 +100,14 @@ def print_all_terms(tagterms, query, threshold):
 
 
 def print_best_terms(tagterms, query, threshold, bonus=1.5):
-    """ If terms is presente in some tag increasse score """
+    """ If terms is presente in all tag increasse score """
 
+    # Take all terms
     all_terms = list()
-
     for tag in query:
         all_terms.append(tagterms.get_terms_score(tag).keys())
 
+    # If terms is in all_terms list we have bonus in enrich terms
     enrich_terms = defaultdict(int)
     for tag in arg["query"]:
         for terms in tagterms.get_terms_score(tag).keys():
@@ -109,8 +117,10 @@ def print_best_terms(tagterms, query, threshold, bonus=1.5):
                 enrich_terms[terms] += tagterms.get_terms_score(tag)[terms] * bonus
 
 
+    # Remove terms with score lower threshold
     selected_terms = {k: v for (k,v) in enrich_terms.items() if v > threshold}
 
+    # Sorted terms by score
     sorted_terms = list()
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
 
@@ -122,10 +132,8 @@ def print_strict_terms(tagterms, query, threshold):
 
     # Find selected terms
     list_of_set = list()
-
     for tag in query:
         list_of_set.append(set(tagterms.get_terms(tag).keys()))
-
     keep_terms = set.intersection(*list_of_set)
 
     all_terms = dict()
@@ -133,8 +141,10 @@ def print_strict_terms(tagterms, query, threshold):
     for tag in query:
         all_terms.update(tagterms.get_terms_score(tag))
 
+    # Select terms if is in keep_terms and thresohld is upper threshold
     selected_terms = {k: v for (k,v) in all_terms.items() if k in keep_terms and v > threshold}
 
+    # Sorte terms by score
     sorted_terms = list()
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
 
@@ -147,10 +157,13 @@ def print_keywords(tagterms, n):
     """
 
     sorted_terms = list()
+    # Get global score terms
     dict_global_terms = tagterms.get_global_score()
 
+    # Sort terms by score
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in dict_global_terms.items()], reverse=True)]
 
+    # print just first terms of sorted list
     print(sorted_terms[0:n])
 
 
