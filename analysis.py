@@ -49,8 +49,6 @@ def main(arg):
 
     tagterms.read_file(arg["input"])
 
-    terms_list = list()
-
     if arg["print_tag"]:
         print_tag(tagterms)
         return 0
@@ -89,7 +87,7 @@ def print_all_terms(tagterms, query, threshold):
     selected_terms = {k: v for (k,v) in all_terms.items() if v > threshold}
 
     sorted_terms = list()
-    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in all_terms.items()], reverse=True)]
+    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
 
     print(sorted_terms)
 
