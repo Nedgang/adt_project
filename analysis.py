@@ -124,18 +124,18 @@ def print_best_terms(tagterms, query, threshold, bonus=1.5):
     [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
 
     print(sorted_terms)
-    
+
 
 def __terms_is_in_tag(tagterms, terms, tags):
-    """ Read a list of tag if terms is in terms associated to this tag 
+    """ Read a list of tag if terms is in terms associated to this tag
     return True, if not return False """
     for tag in tags:
         if terms in tagterms.get_terms(tag):
             return True
-    
+
     return False
 
-    
+
 def print_strict_terms(tagterms, query, threshold):
     """ Print just terms is in all tag query """
 
