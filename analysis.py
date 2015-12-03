@@ -100,24 +100,21 @@ def print_all_terms(tagterms, query, threshold):
 
 
 def print_best_terms(tagterms, query, threshold, bonus=1.5):
-    """ If terms is presente in all tag increasse score """
+    """ If terms is presente in one another tag increasse score """
 
-    # Find terms is in all tag
-    list_of_set = list()
-    for tag in query:
-        list_of_set.append(set(tagterms.get_terms(tag).keys()))
-    keep_terms = set.intersection(*list_of_set)
-
-
-    # If terms is in keep_terms list we have bonus in enrich terms
+    # If found terms in another tag we have bonus in enrich terms
     enrich_terms = defaultdict(int)
-    for tag in arg["query"]:
+    for tag in query:
+        # build list of tag without actual tag
+        tag_list_without_current = list(query)
+        tag_list_without_current.remove(tag)
+
+        # read terms is in tag
         for terms in tagterms.get_terms_score(tag).keys():
-            if terms in keep_terms :
+            if __terms_is_in_tag(tagterms, terms, tag_list_without_current) :
                 enrich_terms[terms] += tagterms.get_terms_score(tag)[terms] * bonus
             else:
                 enrich_terms[terms] += tagterms.get_terms_score(tag)[terms] * bonus
-
 
     # Remove terms with score lower threshold
     selected_terms = {k: v for (k,v) in enrich_terms.items() if v > threshold}
@@ -129,6 +126,16 @@ def print_best_terms(tagterms, query, threshold, bonus=1.5):
     print(sorted_terms)
     
 
+def __terms_is_in_tag(tagterms, terms, tags):
+    """ Read a list of tag if terms is in terms associated to this tag 
+    return True, if not return False """
+    for tag in tags:
+        if terms in tagterms.get_terms(tag):
+            return True
+    
+    return False
+
+    
 def print_strict_terms(tagterms, query, threshold):
     """ Print just terms is in all tag query """
 
