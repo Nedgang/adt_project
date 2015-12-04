@@ -76,4 +76,4 @@ class Tag2Terms:
             for terms in self.__tag2terms[tag].keys():
                 tag_occur = self.__tag2terms[tag][terms]
                 global_occur = self.__terms_global_counter[terms]
-                self.__dfidf[tag][terms] = math.log(tag_occur/global_occur) * -1
+                self.__dfidf[tag][terms] = tag_occur/global_occur
