@@ -39,6 +39,9 @@ import tag2terms
 
 from collections import defaultdict
 
+import frequency_term_validator
+import math
+
 ########
 # MAIN #
 ########
@@ -73,6 +76,10 @@ def main(arg):
     if arg["keywords"]:
         print_keywords(tagterms, arg["keywords"])
         return 0
+
+    if arg["comparative_frequency"]:
+        print_keywords_upper_freq(tagterms, arg["comparative_frequency"], arg["threshold"])
+       
 
 def print_tag(tagterms):
     """ Print all tag in data base """
@@ -176,6 +183,26 @@ def print_keywords(tagterms, n):
     print(sorted_terms[0:n])
 
 
+def print_keywords_upper_freq(tagterms, ref_freq_file, threshold):
+    ref_freq_usage = frequency_term_validator.load_reference(ref_freq_file)
+    
+    dict_global_terms = tagterms.get_global_score()
+    
+    number_of_word = 0
+    for v in dict_global_terms.values():
+        number_of_word += v
+        
+    local_freq_usage = {k: v/number_of_word for (k,v) in dict_global_terms.items() if not (' ' in k)}
+
+    all_terms = frequency_term_validator.filter_by_frequency(local_freq_usage, ref_freq_usage)
+    
+    selected_terms = {k: v for (k,v) in all_terms.items() if k in all_terms and v > threshold}
+    
+    sorted_terms = list()
+    [sorted_terms.append((k,v)) for v,k in sorted([(v,k) for k,v in selected_terms.items()], reverse=True)]
+    
+    print(sorted_terms)
+    
 ##########
 # LAUNCH #
 ##########

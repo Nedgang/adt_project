@@ -32,7 +32,7 @@
 import re
 import math
 
-def load_reference(file):
+def load_reference(freq_file):
     """
         Load the reference corpus, return a dict containing the frequency of a
         term in the corpus
@@ -43,7 +43,7 @@ def load_reference(file):
     global_term_count = 0
 
     # Get total number of words
-    with open(file, 'r') as INFILE:
+    with open(freq_file, 'r') as INFILE:
         for line in INFILE: #not loading the whole file
             if len(line) > 1:
                 # print(line)
@@ -56,7 +56,7 @@ def load_reference(file):
     # Note that, doing log on <1 and *-1 will inverse the order
     # The highest frequency will be the closest to 0
     for key in freq.keys():
-        freq[key] = math.log(int(freq[key])/int(global_term_count)) * -1
+        freq[key] = int(freq[key])/int(global_term_count)
 
     return freq
 

@@ -69,17 +69,21 @@ def analysis_read_args(args):
         __unicorn()
 
     if arg["all_terms"] and arg["best_terms"] and arg["strict_terms"] and arg["keywords"]:
-        print("We can't use many terms option in same time")
+        print("We can't use many tag option in same time")
         return None
 
     if arg["query"] and not (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
-        print("Query need you use terms option")
+        print("Query need you use tag option")
         return None
 
     if arg["keywords"] and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
-        print("We can't use keywords and terms option")
+        print("We can't use keywords and tag option")
         return None
 
+    if arg["comparative_frequency"] and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]):
+        print("We can't use comparative frequency and tag option")
+        return None
+    
     if arg["threshold"] == None and (arg["all_terms"] or arg["best_terms"] or arg["strict_terms"]) :
         print("We need threshold value when you use terms option")
         return None
@@ -112,7 +116,9 @@ def __analysis_create_parser():
                         help="print just terms is in all tags")
     parser.add_argument("-k", "--keywords", type=int,
                         help="print n main terms use in corpus")
-    parser.add_argument("-t", "--threshold", type=float, default=1.0,
+    parser.add_argument("-c", "--comparative-frequency", type=__isfile,
+                        help="print word is frequency usage is upper than reference usage")
+    parser.add_argument("-t", "--threshold", type=float, default=0.002,
                         help="didn't print terms with lower threshold")
 
     # easter egg
